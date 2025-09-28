@@ -1,0 +1,132 @@
+/* Simple text-focused styles for OfficeUniviPage - Unified with brand color #105d97 */
+.articleTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #105d97;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #105d97;
+    margin-bottom: 0.75rem;
+}
+
+.bodyText {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #475569;
+    margin-bottom: 1rem;
+}
+
+.highlightText {
+    color: #105d97;
+    font-weight: 600;
+}
+
+.listItem {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.contactInfo {
+    font-size: 1rem;
+    color: #64748b;
+}
+
+/* Simple brand colors */
+.brandColor {
+    color: #105d97;
+}
+
+.brandBg {
+    background-color: #105d97;
+}
+
+.brandBorder {
+    border-color: #105d97;
+}
+
+/* Typography improvements for Office content - Unified font sizes */
+.officeTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #105d97;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.officeSubtitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #105d97;
+    margin-bottom: 0.75rem;
+}
+
+.officeText {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.officeHighlight {
+    color: #105d97;
+    font-weight: 600;
+}
+
+.officeList {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.officeListItem {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+/* Simple image styling */
+.officeImage {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+}
+
+/* Contact section styling */
+.contactSection {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.contactTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #105d97;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.contactItem {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.contactLabel {
+    font-weight: 600;
+    color: #105d97;
+    font-size: 1rem;
+}
+
+.contactValue {
+    color: #64748b;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+}
