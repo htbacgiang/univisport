@@ -94,9 +94,19 @@ export default async function handler(req, res) {
         await newContact.save();
 
         const transporter = await createTransporter();
+        
+        // Danh sách email admin để nhận thông báo
+        const adminEmails = [
+          process.env.ADMIN_EMAIL || process.env.SENDER_EMAIL_ADDRESS,
+          process.env.ADMIN_EMAIL_2, // Admin 2
+          process.env.ADMIN_EMAIL_3, // Admin 3
+        ].filter(email => email); // Lọc bỏ email null/undefined
+        
+        console.log("Stream contact admin emails to notify:", adminEmails);
+        
         const adminMailOptions = {
           from: process.env.SENDER_EMAIL_ADDRESS,
-          to: "bacgiangeco2@gmail.com",
+          to: adminEmails.join(', '), // Gửi cho tất cả admin
           subject: "Có khách hàng mới đăng ký tại Eco Bắc Giang",
           html: `
             <h3>Xin chào,</h3>

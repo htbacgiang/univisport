@@ -1,5 +1,6 @@
 import db from "../../../utils/db";
 import Products from "../../../models/Product";
+import { triggerSitemapUpdate } from "../../../utils/sitemap-updater";
 
 export default async (req, res) => {
   try {
@@ -131,6 +132,18 @@ const createProduct = async (req, res) => {
     await product.save({ session });
     
     await session.commitTransaction();
+    
+    // Trigger sitemap update
+    try {
+      await triggerSitemapUpdate('product_created', { 
+        id: product._id, 
+        slug: product.slug,
+        name: product.name 
+      });
+    } catch (error) {
+      console.warn('Failed to update sitemap:', error);
+    }
+    
     res.json({
       status: "success",
       product,
@@ -181,6 +194,18 @@ const updateProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ err: "Product not found" });
     }
+    
+    // Trigger sitemap update
+    try {
+      await triggerSitemapUpdate('product_updated', { 
+        id: product._id, 
+        slug: product.slug,
+        name: product.name 
+      });
+    } catch (error) {
+      console.warn('Failed to update sitemap:', error);
+    }
+    
     res.json({
       status: "success",
       product,
@@ -208,6 +233,18 @@ const deleteProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ err: "Product not found" });
     }
+    
+    // Trigger sitemap update
+    try {
+      await triggerSitemapUpdate('product_deleted', { 
+        id: product._id, 
+        slug: product.slug,
+        name: product.name 
+      });
+    } catch (error) {
+      console.warn('Failed to update sitemap:', error);
+    }
+    
     res.json({
       status: "success",
       message: "Product deleted",

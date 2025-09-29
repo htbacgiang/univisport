@@ -7,6 +7,7 @@ import Post from "../../../models/Post";
 import formidable from "formidable";
 import cloudinary from "../../../lib/cloudinary";
 import { IncomingPost } from "../../../utils/types";
+import { triggerSitemapUpdate } from "../../../utils/sitemap-updater";
 
 export const config = {
   api: { bodyParser: false },
@@ -75,6 +76,18 @@ const createNewPost: NextApiHandler = async (req, res) => {
     }
 
     await newPost.save();
+    
+    // Trigger sitemap update
+    try {
+      await triggerSitemapUpdate('post_created', { 
+        id: newPost._id, 
+        slug: newPost.slug,
+        title: newPost.title 
+      });
+    } catch (error) {
+      console.warn('Failed to update sitemap:', error);
+    }
+    
     res.json({ post: newPost });
   } catch (error: any) {
     console.error("Lỗi tạo bài viết:", error);

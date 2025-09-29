@@ -39,7 +39,7 @@ export default function LienHe({ meta }) {
         }
       ],
       "sameAs": [
-        "https://www.facebook.com/dongphucunivi",
+        "https://www.facebook.com/Dongphucunivi",
         "https://www.instagram.com/dongphucunivi"
       ]
     }

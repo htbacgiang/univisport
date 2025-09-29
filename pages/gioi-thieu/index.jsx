@@ -12,7 +12,7 @@ export default function AboutUs({ meta }) {
   return (
     <DefaultLayout2>
       {/* Hero Section - Modern & Elegant */}
-      <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
+      <div className="relative w-full h-[30vh] md:h-[70vh] overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="/images/banner-univi.png"
@@ -101,20 +101,14 @@ export default function AboutUs({ meta }) {
               <div className="relative">
                 <div className="relative overflow-hidden rounded-3xl shadow-2xl group">
                   <Image
-                    src="/images/gioi-thieu/gioi-thieu-univi.jpg"
+                    src="/images/gioi-thieu/xuong-san-xuat.jpg"
                     alt="Phân xưởng sản xuất của Đồng Phục Univi"
                     width={800}
                     height={600}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4">
-                      <p className="text-sm font-medium text-gray-900">Phân xưởng sản xuất số 03</p>
-                      <p className="text-xs text-gray-600">Tại Hải Dương</p>
-                    </div>
-                  </div>
+             
                 </div>
                 
                 {/* Decorative Elements */}
@@ -169,25 +163,19 @@ export default function AboutUs({ meta }) {
                   <div className="col-span-2 grid grid-cols-2 gap-4">
                     <div className="relative overflow-hidden rounded-2xl shadow-lg group">
                       <Image
-                        src="/images/gioi-thieu/showroom-univi.jpg"
+                        src="/images/dong-phuc-the-taho.jpg"
                         alt="Showroom Univi Sport với các sản phẩm đồng phục thể thao"
                         width={400}
                         height={300}
                         className="object-cover w-full h-48 transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                          <p className="text-sm font-semibold text-gray-900">Showroom Univi Sport</p>
-                          <p className="text-xs text-gray-600">Yoga • Gym • Running • Golf</p>
-                        </div>
-                      </div>
+                    
                     </div>
                     
                     <div className="relative overflow-hidden rounded-2xl shadow-lg group">
                       <Image
-                        src="/images/gioi-thieu/team-univi.jpg"
+                        src="/images/team-univi.jpg"
                         alt="Đội ngũ Univi chuyên nghiệp"
                         width={400}
                         height={300}
@@ -196,10 +184,7 @@ export default function AboutUs({ meta }) {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                          <p className="text-sm font-semibold text-gray-900">Đội ngũ chuyên nghiệp</p>
-                          <p className="text-xs text-gray-600">Tận tâm • Sáng tạo • Chất lượng</p>
-                        </div>
+                      
                       </div>
                     </div>
                   </div>
@@ -208,72 +193,51 @@ export default function AboutUs({ meta }) {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative overflow-hidden rounded-2xl shadow-lg group">
                       <Image
-                        src="/images/gioi-thieu/tennis-golf.jpg"
+                        src="/images/dong-phuc-pikeaball.jpg"
                         alt="Đồng phục Tennis và Golf"
                         width={200}
                         height={200}
                         className="object-cover w-full h-32 transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-2 left-2 right-2">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2">
-                          <p className="text-xs font-semibold text-gray-900">Tennis & Golf</p>
-                        </div>
-                      </div>
+                      
                     </div>
                     
                     <div className="relative overflow-hidden rounded-2xl shadow-lg group">
                       <Image
-                        src="/images/gioi-thieu/yoga-pilates.jpg"
+                        src="/images/dong-phuc-huan-luyen-vien.webp"
                         alt="Đồng phục Yoga và Pilates"
                         width={200}
                         height={200}
                         className="object-cover w-full h-32 transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-2 left-2 right-2">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2">
-                          <p className="text-xs font-semibold text-gray-900">Yoga & Pilates</p>
-                        </div>
-                      </div>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative overflow-hidden rounded-2xl shadow-lg group">
                       <Image
-                        src="/images/gioi-thieu/gym-fitness.jpg"
+                        src="/images/yoga.jpg"
                         alt="Đồng phục Gym và Fitness"
                         width={200}
                         height={200}
                         className="object-cover w-full h-32 transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-2 left-2 right-2">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2">
-                          <p className="text-xs font-semibold text-gray-900">Gym & Fitness</p>
-                        </div>
-                      </div>
+                   
                     </div>
                     
                     <div className="relative overflow-hidden rounded-2xl shadow-lg group">
                       <Image
-                        src="/images/gioi-thieu/running-sport.jpg"
+                        src="/images/chay-bo.jpg"
                         alt="Đồng phục Running và thể thao"
                         width={200}
                         height={200}
                         className="object-cover w-full h-32 transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-2 left-2 right-2">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2">
-                          <p className="text-xs font-semibold text-gray-900">Running & Sport</p>
-                        </div>
-                      </div>
+                     
                     </div>
                   </div>
                 </div>

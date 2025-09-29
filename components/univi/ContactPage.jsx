@@ -49,10 +49,10 @@ export default function ContactPage() {
   };
 
   const socialLinks = [
-    { name: "Facebook", icon: FaFacebookF, url: "https://facebook.com/dongphucunivi", color: "bg-blue-600" },
+    { name: "Facebook", icon: FaFacebookF, url: "https://facebook.com/Dongphucunivi", color: "bg-blue-600" },
     { name: "Instagram", icon: FaInstagram, url: "https://instagram.com/dongphucunivi", color: "bg-pink-600" },
     { name: "YouTube", icon: FaYoutube, url: "https://youtube.com/@dongphucunivi", color: "bg-red-600" },
-    { name: "Zalo", icon: SiZalo, url: "https://zalo.me/dongphucunivi", color: "bg-blue-500" }
+    { name: "Zalo", icon: SiZalo, url: "https://zalo.me/0834204999", color: "bg-blue-500" }
   ];
 
   const uniformTypes = [

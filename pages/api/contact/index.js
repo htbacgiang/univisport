@@ -89,9 +89,19 @@ export default async function handler(req, res) {
         await newContact.save();
 
         const transporter = await createTransporter();
+        
+        // Danh sách email admin để nhận thông báo
+        const adminEmails = [
+          process.env.ADMIN_EMAIL || process.env.SENDER_EMAIL_ADDRESS,
+          process.env.ADMIN_EMAIL_2, // Admin 2
+          process.env.ADMIN_EMAIL_3, // Admin 3
+        ].filter(email => email); // Lọc bỏ email null/undefined
+        
+        console.log("Contact admin emails to notify:", adminEmails);
+        
         const adminMailOptions = {
           from: process.env.SENDER_EMAIL_ADDRESS,
-          to: process.env.ADMIN_EMAIL || process.env.SENDER_EMAIL_ADDRESS, // Email nhận riêng biệt
+          to: adminEmails.join(', '), // Gửi cho tất cả admin
           subject: '🔔 Thông báo: Yêu cầu tư vấn mới từ website',
           html: `
             <!DOCTYPE html>
