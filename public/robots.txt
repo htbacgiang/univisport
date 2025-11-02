@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://dongphucunivi.com/
+
+# Sitemaps
+Sitemap: https://dongphucunivi.com/sitemap.xml
