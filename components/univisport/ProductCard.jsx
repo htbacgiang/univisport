@@ -3,21 +3,50 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const ProductCard = ({ id, name, description, price, maxPrice, discount, isNew, isFeatured, colors = [], image, slug, layout = 'grid' }) => {
+  // State for handling image errors
+  const [imageError, setImageError] = useState(false);
+  const [selectedColorImage, setSelectedColorImage] = useState(
+    colors.length > 0 ? (colors[0]?.image || image) : image
+  );
+
   // Sử dụng ảnh đầu tiên trong colors làm ảnh chính
-  const mainImage = colors.length > 0 ? colors[0].image : image;
-  const [selectedColorImage, setSelectedColorImage] = useState(mainImage);
+  const mainImage = colors.length > 0 ? (colors[0]?.image || image) : image;
   const [isHovered, setIsHovered] = useState(false);
 
   // Tất cả ảnh từ colors array
   const allImages = colors;
 
+  // Convert to proper image URL - giống như trang san-pham/[slug]
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '/images/placeholder.jpg';
+    
+    // If already a full URL (http/https), return as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    // If path already starts with /, return as is (it's already a local path)
+    if (imagePath.startsWith('/')) {
+      return imagePath;
+    }
+    
+    // Otherwise prepend / for local paths
+    return `/${imagePath}`;
+  };
+
   const handleColorChange = (img) => {
     setSelectedColorImage(img);
+    setImageError(false); // Reset error when changing color
   };
 
   // Format price to Vietnamese currency
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  };
+
+  // Handle image error
+  const handleImageError = () => {
+    setImageError(true);
   };
 
   return (
@@ -27,13 +56,16 @@ const ProductCard = ({ id, name, description, price, maxPrice, discount, isNew, 
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative w-full aspect-[3/4] overflow-hidden bg-white">
+      <div className="relative w-full aspect-[3/4] overflow-hidden bg-gray-50">
         <Image 
-          src={selectedColorImage} 
+          src={imageError ? '/images/placeholder.jpg' : getImageUrl(selectedColorImage || mainImage)} 
           alt={name} 
           fill 
-          className="object-cover transition-transform duration-500 " 
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
+          className="transition-transform duration-500" 
           sizes="(max-width: 768px) 260px, (max-width: 1024px) 300px, 320px"
+          onError={handleImageError}
+          unoptimized={getImageUrl(selectedColorImage || mainImage).startsWith('http://') || getImageUrl(selectedColorImage || mainImage).startsWith('https://')}
         />
 
         {/* Hover Overlay */}

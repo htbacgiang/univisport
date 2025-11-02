@@ -22,17 +22,41 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
+// Convert to proper image URL
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '/images/placeholder.jpg';
+  
+  // If already a full URL (http/https), return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // If path already starts with /, return as is (it's already a local path)
+  if (imagePath.startsWith('/')) {
+    return imagePath;
+  }
+  
+  // Otherwise prepend / for local paths
+  return `/${imagePath}`;
+};
+
 const ProductCard = ({ product, view }) => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageErrors, setImageErrors] = useState({});
 
   // Ảnh chính hiển thị trong Modal
   const [mainImage, setMainImage] = useState(product.images[0]);
   const handleThumbnailClick = (thumb) => {
     setMainImage(thumb);
+  };
+
+  // Handle image error
+  const handleImageError = (key) => {
+    setImageErrors(prev => ({ ...prev, [key]: true }));
   };
 
   // Lấy thông tin cart từ Redux
@@ -143,13 +167,14 @@ const ProductCard = ({ product, view }) => {
       >
         <Link href={`/san-pham/${product.slug}`}>
           <img
-            src={product.images[0]}
+            src={imageErrors['main'] ? '/images/placeholder.jpg' : getImageUrl(product.images[0])}
             alt={product.title}
             className={`${
               view === "list"
                 ? "md:w-48 md:h-48 h-40 w-40 object-cover mr-4"
                 : "object-cover w-full"
             } rounded`}
+            onError={() => handleImageError('main')}
           />
         </Link>
         <div
@@ -286,20 +311,22 @@ const ProductCard = ({ product, view }) => {
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 pr-4 p-3">
             <img
-              src={mainImage}
+              src={imageErrors['modal'] ? '/images/placeholder.jpg' : getImageUrl(mainImage)}
               alt={product.title}
               className="w-full rounded-lg"
+              onError={() => handleImageError('modal')}
             />
             <div className="flex w-full mt-4 space-x-2 justify-center">
               {product.images.map((thumb, index) => (
                 <img
                   key={index}
-                  src={thumb}
+                  src={imageErrors[`thumb-${index}`] ? '/images/placeholder.jpg' : getImageUrl(thumb)}
                   alt={`Thumbnail ${index + 1}`}
-                  className={`w-16 h-16 rounded border ${
+                  className={`w-16 h-16 rounded border object-cover ${
                     mainImage === thumb ? "border-green-500" : "border-gray-300"
                   } cursor-pointer`}
                   onClick={() => handleThumbnailClick(thumb)}
+                  onError={() => handleImageError(`thumb-${index}`)}
                 />
               ))}
             </div>
