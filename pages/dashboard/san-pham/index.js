@@ -102,7 +102,11 @@ export default function JSONProductsListPage() {
         position: 'top-right',
         autoClose: 3000,
       });
-      const updatedProducts = allProducts.filter((product) => product.id !== productToDelete);
+      // Ensure proper type comparison (handle both number and string IDs)
+      const updatedProducts = allProducts.filter((product) => 
+        String(product.id) !== String(productToDelete) && 
+        String(product._id) !== String(productToDelete)
+      );
       setAllProducts(updatedProducts);
       setTotalPages(Math.ceil(updatedProducts.length / limit));
       if (updatedProducts.length > 0 && displayedProducts.length === 1 && page > 1) {
@@ -110,7 +114,7 @@ export default function JSONProductsListPage() {
       }
     } catch (error) {
       console.error('Error deleting product:', error);
-      toast.error('Không thể xóa sản phẩm', {
+      toast.error(error.response?.data?.err || 'Không thể xóa sản phẩm', {
         position: 'top-right',
         autoClose: 3000,
       });
@@ -401,11 +405,9 @@ export default function JSONProductsListPage() {
           <div className={styles.modal} onClick={closeModal}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
               <div className={styles.modalIconWrapper}>
-                <div className={styles.modalIconCircle}>
-                  <AlertCircle className={styles.modalIcon} size={40} />
-                </div>
+                
               </div>
-              <h3 className={styles.modalTitle}>
+              <h3 className="text-xl font-bold text-red-500 mb-3">
                 Xác nhận xóa sản phẩm
               </h3>
               <p className={styles.modalText}>

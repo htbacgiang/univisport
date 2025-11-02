@@ -89,6 +89,7 @@ export default function ProductDetailPage({ product }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [imageErrors, setImageErrors] = useState({});
   const mainSwiperRef = useRef(null);
   const thumbsSwiperRef = useRef(null);
   const modalRef = useRef(null);
@@ -181,13 +182,27 @@ export default function ProductDetailPage({ product }) {
     ? product.colors.map((color) => color.image)
     : ['/images/placeholder.jpg'];
 
-  // Convert to local image path
-  const toLocalImageUrl = (imagePath) => {
+  // Convert to proper image URL
+  const getImageUrl = (imagePath) => {
     if (!imagePath) return '/images/placeholder.jpg';
+    
+    // If already a full URL (http/https), return as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
     // If path already starts with /, return as is (it's already a local path)
-    if (imagePath.startsWith('/')) return imagePath;
-    // Otherwise prepend /
+    if (imagePath.startsWith('/')) {
+      return imagePath;
+    }
+    
+    // Otherwise prepend / for local paths
     return `/${imagePath}`;
+  };
+
+  // Handle image error
+  const handleImageError = (index) => {
+    setImageErrors(prev => ({ ...prev, [index]: true }));
   };
 
   return (
@@ -215,15 +230,16 @@ export default function ProductDetailPage({ product }) {
                 >
                   {images.map((src, index) => (
                     <SwiperSlide key={index}>
-                      <div className="relative w-full aspect-square bg-white">
+                      <div className="relative w-full aspect-square bg-gray-50 overflow-hidden">
                         <Image
-                          src={toLocalImageUrl(src)}
+                          src={imageErrors[index] ? '/images/placeholder.jpg' : getImageUrl(src)}
                           alt={`${product.name} image ${index + 1}`}
-                          layout="fill"
-                          objectFit="contain"
+                          fill
+                          style={{ objectFit: 'cover', objectPosition: 'center' }}
                           className="rounded-xl transition-all duration-300 hover:scale-[1.02]"
                           priority={index === 0}
-                          onError={() => '/images/placeholder.jpg'}
+                          onError={() => handleImageError(index)}
+                          unoptimized={getImageUrl(src).startsWith('http://') || getImageUrl(src).startsWith('https://')}
                         />
                       </div>
                     </SwiperSlide>
@@ -259,17 +275,18 @@ export default function ProductDetailPage({ product }) {
                             onKeyDown={(e) => e.key === 'Enter' && handleThumbnailClick(index)}
                           >
                             <Image
-                              src={toLocalImageUrl(src)}
+                              src={imageErrors[index] ? '/images/placeholder.jpg' : getImageUrl(src)}
                               alt={`${product.name} Thumbnail ${index + 1}`}
-                              layout="fill"
-                              objectFit="contain"
+                              fill
+                              style={{ objectFit: 'cover', objectPosition: 'center' }}
                               className={`rounded-lg border transition-all duration-200 ${
                                 activeIndex === index 
                                   ? 'border-[#105d97] border-2 shadow-md ring-1 ring-[#105d97]/20' 
                                   : 'border-gray-200 hover:border-[#105d97]/50 group-hover:shadow-sm'
                               }`}
                               loading="lazy"
-                              onError={() => '/images/placeholder.jpg'}
+                              onError={() => handleImageError(index)}
+                              unoptimized={getImageUrl(src).startsWith('http://') || getImageUrl(src).startsWith('https://')}
                             />
                           </div>
                         </SwiperSlide>
@@ -399,7 +416,7 @@ export default function ProductDetailPage({ product }) {
                 <div className="w-1 h-6 bg-[#105d97] rounded-full"></div>
                 <h3 className="text-xl md:text-2xl font-bold text-[#105d97]">Chi tiết sản phẩm</h3>
               </div>
-              <div className="prose prose-base md:prose-lg max-w-none text-gray-700">
+              <div className="prose blog prose-base md:prose-lg max-w-none text-gray-700">
                 {parse(product.content || '<p class="text-gray-600">Không có thông tin chi tiết sản phẩm.</p>')}
               </div>
             </div>

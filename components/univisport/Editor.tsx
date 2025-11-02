@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import { useEditor, EditorContent, getMarkRange, Range } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -24,6 +24,8 @@ const Editor: FC<Props> = ({ content, onChange }): JSX.Element => {
   const [showGallery, setShowGallery] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState<{ src: string }[]>([]);
+  const isInternalUpdateRef = useRef(false);
+  const lastEditorContentRef = useRef<string>('');
 
   const fetchImages = async () => {
     const { data } = await axios("/api/image");
@@ -86,7 +88,15 @@ const Editor: FC<Props> = ({ content, onChange }): JSX.Element => {
     },
     content: content, // Set initial content
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML()); // Update parent on content change
+      isInternalUpdateRef.current = true; // Mark this as internal update
+      const html = editor.getHTML();
+      lastEditorContentRef.current = html;
+      onChange(html); // Update parent on content change
+      
+      // Reset flag after a microtask to allow parent state to update
+      Promise.resolve().then(() => {
+        isInternalUpdateRef.current = false;
+      });
     },
   });
 
@@ -109,8 +119,39 @@ const Editor: FC<Props> = ({ content, onChange }): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (editor) {
-      editor.commands.setContent(content); // Sync content if it changes externally
+    if (!editor) return;
+    
+    // Skip update if this change came from the editor itself
+    if (isInternalUpdateRef.current) {
+      return;
+    }
+    
+    // Check if content prop is different from what's in the editor
+    const editorContent = editor.getHTML();
+    
+    // Only update if content prop is different AND it's not the same as last known editor content
+    if (content !== editorContent && content !== lastEditorContentRef.current) {
+      // This is an external update (e.g., from form reset or prop change)
+      const { from, to } = editor.state.selection;
+      editor.commands.setContent(content, false); // false = don't emit update event
+      lastEditorContentRef.current = content;
+      
+      // Restore cursor position if possible
+      requestAnimationFrame(() => {
+        if (editor && !editor.isDestroyed) {
+          const docSize = editor.state.doc.content.size;
+          if (docSize > 0) {
+            const newFrom = Math.min(from, Math.max(0, docSize - 1));
+            const newTo = Math.min(to, Math.max(0, docSize - 1));
+            try {
+              editor.commands.setTextSelection({ from: newFrom, to: newTo });
+            } catch (e) {
+              // If selection fails, just set to end
+              editor.commands.setTextSelection(docSize - 1);
+            }
+          }
+        }
+      });
     }
   }, [content, editor]);
 

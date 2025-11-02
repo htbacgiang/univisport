@@ -1,6 +1,5 @@
 import db from "../../../utils/db";
 import Products from "../../../models/Product";
-import { triggerSitemapUpdate } from "../../../utils/sitemap-updater";
 
 export default async (req, res) => {
   try {
@@ -138,17 +137,6 @@ const createProduct = async (req, res) => {
     
     await session.commitTransaction();
     
-    // Trigger sitemap update
-    try {
-      await triggerSitemapUpdate('product_created', { 
-        id: product._id, 
-        slug: product.slug,
-        name: product.name 
-      });
-    } catch (error) {
-      console.warn('Failed to update sitemap:', error);
-    }
-    
     res.json({
       status: "success",
       product,
@@ -210,17 +198,6 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ err: "Product not found" });
     }
     
-    // Trigger sitemap update
-    try {
-      await triggerSitemapUpdate('product_updated', { 
-        id: product._id, 
-        slug: product.slug,
-        name: product.name 
-      });
-    } catch (error) {
-      console.warn('Failed to update sitemap:', error);
-    }
-    
     res.json({
       status: "success",
       product,
@@ -244,21 +221,20 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Products.findByIdAndDelete(req.query.id);
+    const { id } = req.query;
+    
+    // Try to find by numeric id first, then by MongoDB _id
+    let product = await Products.findOne({ id: parseInt(id) });
+    if (!product) {
+      product = await Products.findById(id);
+    }
+    
     if (!product) {
       return res.status(404).json({ err: "Product not found" });
     }
     
-    // Trigger sitemap update
-    try {
-      await triggerSitemapUpdate('product_deleted', { 
-        id: product._id, 
-        slug: product.slug,
-        name: product.name 
-      });
-    } catch (error) {
-      console.warn('Failed to update sitemap:', error);
-    }
+    // Delete the product using its MongoDB _id
+    await Products.findByIdAndDelete(product._id);
     
     res.json({
       status: "success",

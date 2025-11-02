@@ -557,14 +557,14 @@
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: modalFadeIn 0.2s ease-out;
 }
 
 @keyframes modalFadeIn {
@@ -578,134 +578,108 @@
 
 .modalContent {
   background: white;
-  padding: 2.5rem 2rem;
-  border-radius: 24px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 100px rgba(0, 0, 0, 0.1);
-  max-width: 450px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 420px;
   width: 100%;
   position: relative;
   text-align: center;
-  animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: modalSlideIn 0.2s ease-out;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(-30px) scale(0.9);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
 .modalIconWrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .modalIconCircle {
-  width: 80px;
-  height: 80px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  background: #fee2e2;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: iconPulse 2s ease-in-out infinite;
-  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
-}
-
-@keyframes iconPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
 }
 
 .modalIcon {
   color: #ef4444;
-  animation: iconShake 0.5s ease-in-out;
-}
-
-@keyframes iconShake {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(-10deg);
-  }
-  75% {
-    transform: rotate(10deg);
-  }
 }
 
 .modalTitle {
-  font-size: 1.75rem;
-  font-weight: 800;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #1e293b;
-  margin-bottom: 1rem;
-  line-height: 1.3;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
 .modalText {
   color: #64748b;
-  margin-bottom: 2rem;
-  line-height: 1.7;
-  font-size: 1rem;
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 .modalActions {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
 }
 
 .modalButton {
-  padding: 0.875rem 2rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   justify-content: center;
-  min-width: 130px;
+  min-width: 120px;
 }
 
 .modalButton.cancel {
-  background: #f1f5f9;
+  background: #f8fafc;
   color: #475569;
-  border: 2px solid #e2e8f0;
+  border: 1px solid #e2e8f0;
 }
 
 .modalButton.cancel:hover:not(:disabled) {
-  background: #e2e8f0;
+  background: #f1f5f9;
   border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .modalButton.delete {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: #ef4444;
   color: white;
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-  border: none;
+  border: 1px solid #ef4444;
 }
 
 .modalButton.delete:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.6);
+  background: #dc2626;
+  border-color: #dc2626;
 }
 
 .modalButton:active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .modalButton:disabled {
@@ -754,10 +728,11 @@
   
   .modalContent {
     background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.1);
   }
   
   .modalIconCircle {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%);
+    background: rgba(239, 68, 68, 0.15);
   }
   
   .modalIcon {
@@ -888,34 +863,37 @@
   
   .modalContent {
     margin: 1rem;
-    padding: 2rem 1.5rem;
-    max-width: 100%;
+    padding: 1.5rem;
+    max-width: calc(100% - 2rem);
   }
   
   .modalIconCircle {
-    width: 70px;
-    height: 70px;
+    width: 56px;
+    height: 56px;
   }
   
   .modalIcon {
-    width: 35px;
-    height: 35px;
+    width: 28px;
+    height: 28px;
   }
   
   .modalTitle {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   
   .modalText {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
   }
   
   .modalActions {
     flex-direction: column;
+    gap: 0.5rem;
   }
   
   .modalButton {
     width: 100%;
+    min-width: auto;
   }
   
   .paginationInfo {
