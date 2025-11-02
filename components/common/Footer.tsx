@@ -266,7 +266,7 @@ export default function Footer() {
                     { href: "/gioi-thieu", text: "Về Đồng phục Univi" },
                     { href: "/ho-so-nang-luc", text: "Hồ sơ năng lực" },
                     { href: "/lien-he", text: "Liên hệ" },
-                    { href: "/", text: "Tuyển dụng" }
+                    { href: "/tuyen-dung", text: "Tuyển dụng" }
                   ].map((item, index) => (
                     <li key={index}>
                       <Link 

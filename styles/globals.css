@@ -9,6 +9,30 @@ html, body {
   overflow-y: auto;
 }
 
+/* Custom thin scrollbar for entire page */
+::-webkit-scrollbar {
+  width: 4px; /* Mỏng hơn scrollbar mặc định */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
 /* Force gradient utilities for PropertyDetail */
 @layer utilities {
   .gradient-amber-400-600 {

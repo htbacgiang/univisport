@@ -1,4 +1,3 @@
-import ProductCard from '../../components/univisport/ProductCard';
 import DefaultLayout2 from "../../components/layout/DefaultLayout2";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -7,9 +6,6 @@ import { formatPosts, readPostsFromDb } from '../../lib/utils';
 import HeroSection1 from "../../components/univisport/HeroSection1";
 import CategoryGrid from '../../components/univisport/CategoryGrid';
 import CountdownTimer from '../../components/univisport/CountdownTimer';
-import ContactForm from '../../components/header/ContactForm';
-import ProductPage from '../../components/univisport/ProductPage';
-import HeroSectionBlog from '../../components/univisport/HeroSectionBlog';
 import FabricCardComponent from '../../components/univisport/FabricCardComponent';
 import CategoryShop from '../../components/univisport/CategoryShop';
 import SeoArticleSection from '../../components/univisport/SeoArticleSection';

@@ -192,12 +192,11 @@ export default function TuyenDung() {
         
         <div className="container mx-auto px-4 text-center relative z-10 py-20">
           <div className="max-w-4xl mx-auto">
-            
-            <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
                 Tuyển Dụng Univi
             </h1>
             
-            <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-5xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/90 mb-8 max-w-6xl mx-auto leading-relaxed">
               Tham gia đội ngũ của chúng tôi - nơi tài năng được tôn vinh, 
               sự phát triển được khuyến khích và thành công được chia sẻ
             </p>
@@ -211,13 +210,7 @@ export default function TuyenDung() {
                 <span>Xem Vị Trí Tuyển Dụng</span>
                 <TrendingUp className="w-5 h-5" />
               </a>
-              <a 
-                href="#benefits"
-                className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-bold rounded-full hover:bg-white/20 transition-all border border-white/30 flex items-center gap-2"
-              >
-                <span>Khám Phá Quyền Lợi</span>
-                <Heart className="w-5 h-5" />
-              </a>
+           
             </div>
           </div>
         </div>
@@ -225,49 +218,15 @@ export default function TuyenDung() {
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-
-      {/* Benefits Section */}
-      <section id="benefits" className="py-20 gradient-recruitment-bg">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 gradient-recruitment-primary text-white rounded-full mb-4">
-              <Heart className="w-4 h-4" />
-              <span className="text-sm font-semibold">Quyền Lợi</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Tại Sao Chọn <span className="text-gradient-recruitment">Chúng Tôi</span>?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Chúng tôi tin rằng đầu tư vào nhân viên là đầu tư vào tương lai
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {benefits.map((benefit, index) => (
-              <div 
-                key={index}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 border border-blue-100"
-              >
-                <div className="w-16 h-16 rounded-2xl gradient-recruitment-primary text-white flex items-center justify-center mb-6 transform hover:rotate-6 transition-transform">
-                  {benefit.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{benefit.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Jobs Section */}
-      <section id="jobs" className="py-20 bg-white">
+      <section id="jobs" className="py-10 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 gradient-recruitment-secondary text-white rounded-full mb-4">
               <Briefcase className="w-4 h-4" />
               <span className="text-sm font-semibold">Vị Trí Tuyển Dụng</span>
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-2">
               Cơ Hội <span className="text-gradient-recruitment">Nghề Nghiệp</span> Đang Chờ Bạn
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -289,13 +248,10 @@ export default function TuyenDung() {
                       </div>
                   <div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-2 transition-colors" style={{ color: 'inherit' }}>{job.title}</h3>
-                        <p className="font-semibold text-lg" style={{ color: '#105d97' }}>{job.department}</p>
                       </div>
                     </div>
                   </div>
-                  <span className="px-4 py-2 gradient-recruitment-success text-white rounded-full text-sm font-bold shadow-md">
-                    {job.type}
-                  </span>
+               
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -351,21 +307,18 @@ export default function TuyenDung() {
           onClick={() => setSelectedJob(null)}
         >
           <div 
-            className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl transform animate-slide-up"
+            className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] mt-4 overflow-hidden shadow-2xl transform animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 gradient-recruitment-primary text-white p-8 flex justify-between items-start">
+            <div className="sticky gradient-recruitment-primary text-white px-8 py-6 flex justify-between items-start">
               <div className="flex-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-                  <Briefcase className="w-4 h-4" />
-                  <span className="text-sm font-semibold">{selectedJob.department}</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">{selectedJob.title}</h2>
-                <p className="text-white/90 text-lg">{selectedJob.location} • {selectedJob.type}</p>
+                
+                <h2 className="text-2xl  font-bold mb-1">{selectedJob.title}</h2>
+                <p className="text-white/90 text-base">{selectedJob.location} • {selectedJob.type}</p>
               </div>
               <button
                 onClick={() => setSelectedJob(null)}
-                className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all backdrop-blur-sm transform hover:rotate-90 duration-300"
+                className="w-12 h-12 rounded-full hover:bg-white/30 flex items-center justify-center transition-all backdrop-blur-sm transform hover:rotate-90 duration-300"
               >
                 <span className="text-2xl text-white">×</span>
               </button>
@@ -381,7 +334,7 @@ export default function TuyenDung() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Địa điểm</p>
-                    <p className="font-bold text-gray-900">{selectedJob.location}</p>
+                    <p className="font-bold text-sm text-gray-900">{selectedJob.location}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 p-5 bg-green-50 rounded-2xl border border-green-100 hover:shadow-lg transition-all">
@@ -390,7 +343,7 @@ export default function TuyenDung() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Mức lương</p>
-                    <p className="font-bold text-gray-900">{selectedJob.salary}</p>
+                    <p className="font-bold text-sm text-gray-900">{selectedJob.salary}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 p-5 bg-blue-50 rounded-2xl border border-blue-100 hover:shadow-lg transition-all">
@@ -399,7 +352,7 @@ export default function TuyenDung() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Kinh nghiệm</p>
-                    <p className="font-bold text-gray-900">{selectedJob.experience}</p>
+                    <p className="font-bold text-sm text-gray-900">{selectedJob.experience}</p>
                   </div>
                 </div>
               </div>
@@ -408,9 +361,9 @@ export default function TuyenDung() {
               <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-1 h-6 gradient-recruitment-primary rounded-full"></div>
-                  <h3 className="text-2xl font-bold text-gray-900">Mô Tả Công Việc</h3>
+                  <h3 className="text-xl font-bold text-gray-900">Mô Tả Công Việc</h3>
                 </div>
-                <p className="text-gray-700 leading-relaxed text-lg">{selectedJob.description}</p>
+                <p className="text-gray-700 leading-relaxed text-base">{selectedJob.description}</p>
               </div>
 
               {/* Requirements */}
@@ -577,7 +530,7 @@ export default function TuyenDung() {
       )}
 
       {/* Contact Section */}
-      <section className="relative py-24 gradient-recruitment-hero overflow-hidden">
+      <section className="relative py-10 gradient-recruitment-hero overflow-hidden">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')" }}></div>
         
@@ -588,19 +541,17 @@ export default function TuyenDung() {
               <span className="text-white text-sm font-semibold">Liên Hệ</span>
             </div>
 
-            <h2 className="text-4xl  font-bold mb-6 text-white">
+            <h2 className="text-xl md:text-4xl font-bold mb-2 text-white">
               Không Tìm Thấy Vị Trí Phù Hợp?
             </h2>
-            
             <p className="text-xl text-white/90 mb-10 leading-relaxed">
               Đừng lo lắng! Gửi CV của bạn cho chúng tôi. 
-              <br />
               Chúng tôi luôn chào đón những tài năng mới và sẽ liên hệ khi có cơ hội phù hợp
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a 
-            href="mailto:tuyendung@dongphucunivi.com"
+            href="mailto:dongphucunivi@gmail.com"
                 className="group inline-flex items-center gap-3 px-10 py-5 bg-white font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl"
                 style={{ color: '#105d97' }}
               >
@@ -608,7 +559,7 @@ export default function TuyenDung() {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
                 </svg>
-                <span>tuyendung@dongphucunivi.com</span>
+                <span>dongphucunivi@gmail.com</span>
                 <TrendingUp className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
               
@@ -619,41 +570,10 @@ export default function TuyenDung() {
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
                 </svg>
-                <span>0123 456 789</span>
+                <span>0834.204.999</span>
               </a>
             </div>
 
-            <div className="mt-12 p-8 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20">
-              <div className="grid md:grid-cols-3 gap-6 text-white">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                    <MapPin className="w-7 h-7" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Địa chỉ</p>
-                    <p className="text-sm text-white/80">Hà Nội, Việt Nam</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                    <Clock className="w-7 h-7" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Giờ làm việc</p>
-                    <p className="text-sm text-white/80">T2 - T6: 8:00 - 17:30</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                    <Users className="w-7 h-7" />
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Đội ngũ</p>
-                    <p className="text-sm text-white/80">50+ thành viên</p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
