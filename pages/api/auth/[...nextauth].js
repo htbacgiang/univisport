@@ -55,10 +55,22 @@ export default NextAuth({
   callbacks: {
     async session({ session, token }) {
       try {
+        // Chỉ tìm user nếu có token và token.sub hợp lệ (user đã đăng nhập)
+        if (!token || !token.sub) {
+          // Người dùng chưa đăng nhập, return session rỗng (cho phép truy cập public)
+          return session;
+        }
+        
         const user = await User.findById(token.sub);
-        if (!user) throw new Error("User not found.");
+        if (!user) {
+          // User không tồn tại nhưng có token, có thể token đã hết hạn hoặc user đã bị xóa
+          // Không throw error, chỉ return session cơ bản
+          return session;
+        }
+        
+        // Cập nhật session với thông tin user
         session.user.id = token.sub || user._id.toString();
-        session.user.name = user.name; // <-- Thêm dòng này để cập nhật tên
+        session.user.name = user.name;
         session.user.role = user.role || "user";
         session.user.emailVerified = user.emailVerified || false;
         session.user.image = user.image;
@@ -69,6 +81,7 @@ export default NextAuth({
         return session;
       } catch (error) {
         console.error("Session callback error:", error);
+        // Không throw error, return session để không block public access
         return session;
       }
     },

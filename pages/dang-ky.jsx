@@ -419,10 +419,9 @@ export default function Signup({ csrfToken, meta }) {
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-  console.log("Signup session:", session); // Debug
 
-  if (session) {
-    console.log("Redirecting to dashboard");
+  // Chỉ redirect nếu user thực sự đã đăng nhập (có session.user)
+  if (session?.user) {
     return {
       redirect: {
         destination: "/dashboard",

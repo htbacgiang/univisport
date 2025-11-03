@@ -257,7 +257,8 @@ export async function getServerSideProps(context) {
   const session = await getSession({ req });
   const callbackUrl = query.callbackUrl || null;
 
-  if (session) {
+  // Chỉ redirect nếu user thực sự đã đăng nhập (có session.user)
+  if (session?.user) {
     return {
       redirect: {
         destination: "/dashboard",

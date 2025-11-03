@@ -11,6 +11,7 @@ import { PencilRuler, Shirt, Factory, Truck } from 'lucide-react';
 import debounce from 'lodash/debounce';
 import parse from 'html-react-parser';
 import ContactForm from '../../../components/header/ContactForm';
+import ProductSlider from '../../../components/univisport/ProductSlider';
 import axios from 'axios';
 
 // Breadcrumb Component
@@ -84,12 +85,13 @@ function StarRating({ rating, uniqueId }) {
 }
 
 // Main Component
-export default function ProductDetailPage({ product }) {
+export default function ProductDetailPage({ product, relatedProducts = [], categorySlug = '' }) {
   const router = useRouter();
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
   const mainSwiperRef = useRef(null);
   const thumbsSwiperRef = useRef(null);
   const modalRef = useRef(null);
@@ -411,16 +413,63 @@ export default function ProductDetailPage({ product }) {
 
           {/* Product Details Section */}
           <div className="mt-6 max-w-7xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div className="bg-white  p-6 md:p-8">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-1 h-6 bg-[#105d97] rounded-full"></div>
                 <h3 className="text-xl md:text-2xl font-bold text-[#105d97]">Chi tiết sản phẩm</h3>
               </div>
-              <div className="prose blog prose-base md:prose-lg max-w-none text-gray-700">
-                {parse(product.content || '<p class="text-gray-600">Không có thông tin chi tiết sản phẩm.</p>')}
+              <div className="relative">
+                <div 
+                  className={`prose blog prose-base md:prose-lg max-w-none text-gray-700 transition-all duration-500 ${
+                    !isContentExpanded ? 'max-h-96 overflow-hidden' : ''
+                  }`}
+                >
+                  {parse(product.content || '<p class="text-gray-600">Không có thông tin chi tiết sản phẩm.</p>')}
+                </div>
+                {!isContentExpanded && (
+                  <>
+                    {/* Gradient fade overlay - opacity từ 0 đến 1 */}
+                    <div 
+                      className="absolute bottom-3 left-0 right-0 h-40 pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.3) 75%, rgba(255, 255, 255, 0) 100%)'
+                      }}
+                    ></div>
+                    {/* Expand button */}
+                    <div className="relative mt-4 flex justify-center">
+                      <button
+                        onClick={() => setIsContentExpanded(true)}
+                        className="bg-[#105d97] text-white px-6 py-3 rounded-xl hover:bg-[#0e4a7a] transition-all duration-200  shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        aria-label="Xem đầy đủ bài viết"
+                      >
+                        Xem chi tiết
+                      </button>
+                    </div>
+                  </>
+                )}
+                {isContentExpanded && (
+                  <div className="mt-4 flex justify-center">
+                    <button
+                      onClick={() => setIsContentExpanded(false)}
+                      className="bg-[#105d97] text-white px-6 py-3 rounded-xl hover:bg-[#0e4a7a] transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                      aria-label="Thu gọn bài viết"
+                    >
+                      Thu gọn bài viết
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
+
+
+          {/* Related Products Section */}
+          {relatedProducts && relatedProducts.length > 0 && (
+            <ProductSlider
+              title="Sản phẩm liên quan"
+              products={relatedProducts}
+            />
+          )}
         </div>
 
         {/* Contact Form Modal */}
@@ -479,6 +528,33 @@ export async function getServerSideProps({ params }) {
     if (!product) {
       return { notFound: true };
     }
+
+    // Filter related products (random 6 products, exclude current product)
+    const availableProducts = productsData.filter(p => p.slug !== product.slug);
+    
+    // Shuffle array and take 6 random products
+    const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
+    const relatedProductsFiltered = shuffled.slice(0, 6);
+
+    // Format related products like homepage
+    const relatedProducts = relatedProductsFiltered.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      maxPrice: p.originalPrice || p.maxPrice || p.price,
+      discount: p.originalPrice ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0,
+      isNew: p.isNew || false,
+      colors: Array.isArray(p.colors)
+        ? p.colors.map(color => ({
+            name: color.name || 'Màu',
+            hex: color.hex || '#000000',
+            image: color.image || '',
+          }))
+        : [],
+      image: p.colors && p.colors.length > 0 ? p.colors[0].image : (p.image || ''),
+      slug: p.slug || '',
+    }));
+
     const defaultImage = '/images/banner-1.webp';
     const productName = product?.name || 'Đồng phục Univi';
     const productDescription = product?.description ||
@@ -546,6 +622,8 @@ export async function getServerSideProps({ params }) {
       props: {
         meta,
         product,
+        relatedProducts,
+        categorySlug,
       },
     };
   } catch (error) {
