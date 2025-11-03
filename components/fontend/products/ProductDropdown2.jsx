@@ -70,6 +70,11 @@ const ProductDropdown = () => {
                   Đồng phục MMA
                 </Link>
               </li>
+              <li>
+                <Link href="/san-pham/dong-phuc-golf-tennis" className="hover:text-[#105d97]  py-2">
+                  Đồng phục Golf-Tennis
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -92,12 +97,16 @@ const ProductDropdown = () => {
                   Đồng phục công sở
                 </Link>
               </li>
-              <li>
-                <Link href="/san-pham/dong-phuc-team-building" className="hover:text-[#105d97]">
-                  Đồng phục Team building
-                </Link>
-              </li>
-          
+                <li>
+                  <Link href="/san-pham/dong-phuc-team-building" className="hover:text-[#105d97]">
+                    Đồng phục Team building
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/san-pham/dong-phuc-ao-gio" className="hover:text-[#105d97]">
+                    Đồng phục Áo gió
+                  </Link>
+                </li>
             </ul>
           </div>
 
