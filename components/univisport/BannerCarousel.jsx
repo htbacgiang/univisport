@@ -31,7 +31,7 @@ const BannerCarousel = () => {
 
   return (
     <div className="mt-4 hidden md:block">
-      <div className="relative w-full h-[400px] overflow-hidden rounded-lg">
+      <div className="relative w-full min-h-[400px] overflow-hidden rounded-lg">
         {banners.map((banner, index) => (
           <div
             key={index}
@@ -43,7 +43,7 @@ const BannerCarousel = () => {
               src={banner.src}
               alt={banner.alt}
               fill
-              className="w-full h-full object-cover"
+              className="w-full h-full object-fill"
               priority={index === 0} // Optimize first image
             />
           </div>

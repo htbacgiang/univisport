@@ -9,6 +9,7 @@ import CountdownTimer from '../../components/univisport/CountdownTimer';
 import FabricCardComponent from '../../components/univisport/FabricCardComponent';
 import CategoryShop from '../../components/univisport/CategoryShop';
 import SeoArticleSection from '../../components/univisport/SeoArticleSection';
+import InternalLinks from '../../components/univisport/InternalLinks';
 
 const ProductsPage = ({ relatedPosts }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -150,6 +151,7 @@ const ProductsPage = ({ relatedPosts }) => {
       <HeroSection1 />
       <FabricCardComponent />
       <SeoArticleSection />
+ 
     </DefaultLayout2>
   );
 };

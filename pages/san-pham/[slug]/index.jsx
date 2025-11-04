@@ -7,8 +7,6 @@ import { Navigation, Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import DefaultLayout from '../../../components/layout/DefaultLayout';
-import { PencilRuler, Shirt, Factory, Truck } from 'lucide-react';
-import debounce from 'lodash/debounce';
 import parse from 'html-react-parser';
 import ContactForm from '../../../components/header/ContactForm';
 import ProductSlider from '../../../components/univisport/ProductSlider';
@@ -85,7 +83,7 @@ function StarRating({ rating, uniqueId }) {
 }
 
 // Main Component
-export default function ProductDetailPage({ product, relatedProducts = [], categorySlug = '' }) {
+export default function ProductDetailPage({ product, relatedProducts = [], categorySlug: propCategorySlug = '' }) {
   const router = useRouter();
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -327,22 +325,22 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
               </div>
 
               {/* Product Info Section */}
-              <div className="w-full lg:w-1/2 p-2 mt-2 md:p-6 lg:p-8">
-                <div className="mb-5">
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 leading-tight">{product.name}</h1>
-                  <div className="flex items-center gap-3 mb-3">
+              <div className="w-full lg:w-1/2 p-2 mt-2 md:p-4 lg:p-6">
+                <div className="mb-4">
+                  <h1 className="text-2xl md:text-2xl font-bold mb-2 leading-tight">{product.name}</h1>
+                  <div className="flex items-center gap-3 mb-2">
                     <StarRating rating={product.rating || 0} uniqueId={`star-${product.id}`} />
-                    <span className="text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                       {product.reviewCount || 0} đánh giá
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-200/60 mb-5">
-                  <div className="space-y-3">
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-3 border border-gray-200/60 mb-4">
+                  <div className="space-y-2">
                     <div className="flex justify-between items-center py-2 border-b border-gray-200/60">
                       <span className="text-sm text-gray-600">Mã sản phẩm</span>
-                      <span className="text-sm font-semibold text-gray-900">{product.maSanPham || `TCT${product.id}-${product.category.toUpperCase()}`}</span>
+                      <span className="text-sm font-semibold">{product.maSanPham || `TCT${product.id}-${product.category.toUpperCase()}`}</span>
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-gray-200/60">
                       <span className="text-sm text-gray-600">Giá sản phẩm</span>
@@ -352,18 +350,18 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-gray-200/60">
                       <span className="text-sm text-gray-600">Chất liệu</span>
-                      <span className="text-sm font-semibold text-gray-900">{product.material || 'Không xác định'}</span>
+                      <span className="text-sm font-semibold">{product.material || 'Không xác định'}</span>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="text-sm text-gray-600">Danh mục</span>
-                      <span className="text-sm font-semibold text-gray-900">{product.categoryNameVN}</span>
+                      <span className="text-sm font-semibold">{product.categoryNameVN}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 mb-5">
+                <div className="flex flex-col sm:flex-row gap-2 mb-4">
                   <button
-                    className="flex-1 text-center bg-[#105d97] text-white py-3 px-5 rounded-xl hover:bg-[#0e4a7a] transition-all duration-200 font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                    className="flex-1 text-center bg-[#105d97] text-white py-2 px-4 rounded-xl hover:bg-[#0e4a7a] transition-all font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                     onClick={toggleForm}
                     aria-label="Liên hệ nhận báo giá"
                   >
@@ -371,39 +369,27 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
                   </button>
                   <a
                     href="tel:0834204999"
-                    className="flex-1 text-center bg-gradient-to-r from-red-500 to-red-600 text-black py-3 px-5 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                    className="flex-1 text-center bg-gradient-to-r from-red-500 to-red-600 text-black py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 transition-all font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                     aria-label="Gọi hotline 0834.204.999"
                   >
                    Hotline: 0834.204.999
                   </a>
                 </div>
 
-                <div className="bg-gradient-to-br hidden md:block from-blue-50 to-blue-100/50 rounded-xl p-5 border border-blue-200/60">
-                  <h3 className="text-base font-bold text-[#105d97] mb-4 text-center">Ưu điểm nổi bật</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-                      <span className="flex-none w-8 h-8 flex items-center justify-center bg-[#105d97]/10 rounded-lg">
-                        <PencilRuler className="w-4 h-4 text-[#105d97]" />
-                      </span>
-                      <span className="text-sm font-medium text-gray-700">Miễn phí thiết kế</span>
+                <div className="bg-gradient-to-br hidden md:block from-blue-50 to-blue-100/50 rounded-xl p-4 border border-blue-200/60">
+                  <h3 className="text-base font-bold mb-3 text-center">Ưu điểm nổi bật</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all">
+                      <span className="text-sm font-medium">Miễn phí thiết kế</span>
                     </div>
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-                      <span className="flex-none w-8 h-8 flex items-center justify-center bg-[#105d97]/10 rounded-lg">
-                        <Shirt className="w-4 h-4 text-[#105d97]" />
-                      </span>
-                      <span className="text-sm font-medium text-gray-700">Chất vải cao cấp</span>
+                    <div className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all">
+                      <span className="text-sm font-medium">Chất vải cao cấp</span>
                     </div>
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-                      <span className="flex-none w-8 h-8 flex items-center justify-center bg-[#105d97]/10 rounded-lg">
-                        <Factory className="w-4 h-4 text-[#105d97]" />
-                      </span>
-                      <span className="text-sm font-medium text-gray-700">Xưởng sản xuất khép kín</span>
+                    <div className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all">
+                      <span className="text-sm font-medium">Xưởng sản xuất khép kín</span>
                     </div>
-                    <div className="flex items-center gap-2.5 p-2.5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-                      <span className="flex-none w-8 h-8 flex items-center justify-center bg-[#105d97]/10 rounded-lg">
-                        <Truck className="w-4 h-4 text-[#105d97]" />
-                      </span>
-                      <span className="text-sm font-medium text-gray-700">Giao hàng nhanh 3 ngày</span>
+                    <div className="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all">
+                      <span className="text-sm font-medium">Giao hàng nhanh 3 ngày</span>
                     </div>
                   </div>
                 </div>
@@ -413,10 +399,10 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
 
           {/* Product Details Section */}
           <div className="mt-6 max-w-7xl mx-auto">
-            <div className="bg-white  p-6 md:p-8">
-              <div className="flex items-center gap-2.5 mb-5">
+            <div className="bg-white p-4 md:p-6">
+              <div className="flex items-center gap-2 mb-4">
                 <div className="w-1 h-6 bg-[#105d97] rounded-full"></div>
-                <h3 className="text-xl md:text-2xl font-bold text-[#105d97]">Chi tiết sản phẩm</h3>
+                <h3 className="text-xl md:text-xl font-bold">Chi tiết sản phẩm</h3>
               </div>
               <div className="relative">
                 <div 
@@ -436,10 +422,10 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
                       }}
                     ></div>
                     {/* Expand button */}
-                    <div className="relative mt-4 flex justify-center">
+                    <div className="relative mt-3 flex justify-center">
                       <button
                         onClick={() => setIsContentExpanded(true)}
-                        className="bg-[#105d97] text-white px-6 py-3 rounded-xl hover:bg-[#0e4a7a] transition-all duration-200  shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        className="bg-[#105d97] text-white px-4 py-2 rounded-xl hover:bg-[#0e4a7a] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                         aria-label="Xem đầy đủ bài viết"
                       >
                         Xem chi tiết
@@ -448,10 +434,10 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
                   </>
                 )}
                 {isContentExpanded && (
-                  <div className="mt-4 flex justify-center">
+                  <div className="mt-3 flex justify-center">
                     <button
                       onClick={() => setIsContentExpanded(false)}
-                      className="bg-[#105d97] text-white px-6 py-3 rounded-xl hover:bg-[#0e4a7a] transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                      className="bg-[#105d97] text-white px-4 py-2 rounded-xl hover:bg-[#0e4a7a] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                       aria-label="Thu gọn bài viết"
                     >
                       Thu gọn bài viết
@@ -470,6 +456,8 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
               products={relatedProducts}
             />
           )}
+
+       
         </div>
 
         {/* Contact Form Modal */}

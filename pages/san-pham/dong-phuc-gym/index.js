@@ -405,7 +405,7 @@ const DongPhucGym = ({ initialProducts }) => {
                   background: 'linear-gradient(135deg, #105d97 0%, #2563eb 100%)'
                 }}
               ></div>
-              <div className="relative bg-white rounded-xl p-1 shadow-sm border border-gray-100">
+              <div className="relative">
                 <BannerCarousel />
               </div>
             </div>
