@@ -14,7 +14,7 @@ const categories = [
   },
   {
     name: "Yoga - Pilates",
-    slug: "/san-pham/dong-phuc-gym", // Slug tùy chỉnh
+    slug: "/san-pham/dong-phuc-yoga-pilates", // Slug tùy chỉnh
     image: "/product/dong-phuc-yoga.webp",
     width: 300,
     height: 600,

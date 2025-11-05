@@ -15,7 +15,8 @@ import HeroSection1 from "../components/univisport/HeroSection1";
 import CountdownTimer from "../components/univisport/CountdownTimer";
 import PartnersSection from "../components/univisport/PartnersSection";
 import FabricCardComponent from "../components/univisport/FabricCardComponent";
-import axios from "axios";
+import db from "../utils/db";
+import Product from "../models/Product";
 
 
 export default function Home({ posts, sportswearProducts, pickleballProducts, yogaPilatesProducts, meta }) {
@@ -117,10 +118,9 @@ export async function getServerSideProps() {
     const posts = await readPostsFromDb(3, 0);
     const formattedPosts = formatPosts(posts);
 
-    // Fetch sản phẩm từ API
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-    const productsResponse = await axios.get(`${baseUrl}/api/products`);
-    const productsData = productsResponse.data.products || [];
+    // Fetch sản phẩm trực tiếp từ database
+    await db.connectDb();
+    const productsData = await Product.find({}).lean() || [];
 
     // Lọc sản phẩm Gym
     const gymProducts = productsData.filter(product => product.category === 'dong-phuc-gym');
@@ -138,7 +138,7 @@ export async function getServerSideProps() {
             image: color.image || '',
           }))
         : [],
-      image: product.colors && product.colors.length > 0 ? product.colors[0].image : '',
+      image: product.colors && product.colors.length > 0 ? product.colors[0].image : (product.image || ''),
       slug: product.slug || '',
     }));
 
@@ -158,7 +158,7 @@ export async function getServerSideProps() {
             image: color.image || '',
           }))
         : [],
-      image: product.colors && product.colors.length > 0 ? product.colors[0].image : '',
+      image: product.colors && product.colors.length > 0 ? product.colors[0].image : (product.image || ''),
       slug: product.slug || '',
     }));
 
@@ -178,7 +178,7 @@ export async function getServerSideProps() {
             image: color.image || '',
           }))
         : [],
-      image: product.colors && product.colors.length > 0 ? product.colors[0].image : '',
+      image: product.colors && product.colors.length > 0 ? product.colors[0].image : (product.image || ''),
       slug: product.slug || '',
     }));
 

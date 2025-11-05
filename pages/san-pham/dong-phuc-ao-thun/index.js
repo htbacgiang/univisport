@@ -6,6 +6,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Search, X, Grid3X3, List } from 'lucide-react';
 import BannerCarousel from '../../../components/univisport/BannerCarousel';
 import TShirtUniformsUniviPage from '../../../components/univisport/bai-viet/TShirtUniformsUniviPage';
+import db from '../../../utils/db';
+import Product from '../../../models/Product';
 
 // Hàm bỏ dấu tiếng Việt và chuẩn hóa slug
 const removeDiacritics = (str) => {
@@ -743,14 +745,12 @@ const toCloudinaryUrl = (relativePath) => {
 
 export async function getServerSideProps() {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/products?category=dong-phuc-ao-thun`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
-    }
-    const data = await response.json();
+    // Connect to database and fetch products
+    await db.connectDb();
+    const productsData = await Product.find({ category: 'dong-phuc-ao-thun' }).lean();
 
-    const initialProducts = Array.isArray(data.products)
-      ? data.products.map(product => ({
+    const initialProducts = Array.isArray(productsData)
+      ? productsData.map(product => ({
         id: product._id || null,
         name: product.name || 'Untitled Product',
         price: product.price || 0,

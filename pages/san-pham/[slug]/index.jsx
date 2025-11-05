@@ -10,7 +10,8 @@ import DefaultLayout from '../../../components/layout/DefaultLayout';
 import parse from 'html-react-parser';
 import ContactForm from '../../../components/header/ContactForm';
 import ProductSlider from '../../../components/univisport/ProductSlider';
-import axios from 'axios';
+import db from '../../../utils/db';
+import Product from '../../../models/Product';
 
 // Breadcrumb Component
 function Breadcrumb({ product }) {
@@ -502,13 +503,12 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
   );
 }
 
-// Server-side props - Fetch from API
+// Server-side props - Fetch from database
 export async function getServerSideProps({ params }) {
   try {
-    // Fetch products data from API
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-    const response = await axios.get(`${baseUrl}/api/products`);
-    const productsData = response.data.products || [];
+    // Connect to database and fetch products
+    await db.connectDb();
+    const productsData = await Product.find({}).lean() || [];
     
     // Find product by slug
     const product = productsData.find(p => p.slug === params.slug);

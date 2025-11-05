@@ -151,7 +151,6 @@ const ProductsPage = ({ relatedPosts }) => {
       <HeroSection1 />
       <FabricCardComponent />
       <SeoArticleSection />
- 
     </DefaultLayout2>
   );
 };
