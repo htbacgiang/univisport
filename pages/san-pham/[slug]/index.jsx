@@ -511,37 +511,46 @@ export async function getServerSideProps({ params }) {
     const productsData = await Product.find({}).lean() || [];
     
     // Find product by slug
-    const product = productsData.find(p => p.slug === params.slug);
+    const productRaw = productsData.find(p => p.slug === params.slug);
 
-    if (!product) {
+    if (!productRaw) {
       return { notFound: true };
     }
 
-    // Filter related products (random 6 products, exclude current product)
-    const availableProducts = productsData.filter(p => p.slug !== product.slug);
+    // Serialize product to plain JSON object (remove MongoDB _id and other non-serializable fields)
+    const product = JSON.parse(JSON.stringify(productRaw));
+
+    // Filter related products (same category, exclude current product)
+    const availableProducts = productsData.filter(
+      p => p.slug !== product.slug && p.category === product.category
+    );
     
-    // Shuffle array and take 6 random products
+    // Shuffle array and take 6 random products from same category
     const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
     const relatedProductsFiltered = shuffled.slice(0, 6);
 
     // Format related products like homepage
-    const relatedProducts = relatedProductsFiltered.map(p => ({
-      id: p.id,
-      name: p.name,
-      price: p.price,
-      maxPrice: p.originalPrice || p.maxPrice || p.price,
-      discount: p.originalPrice ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0,
-      isNew: p.isNew || false,
-      colors: Array.isArray(p.colors)
-        ? p.colors.map(color => ({
-            name: color.name || 'Màu',
-            hex: color.hex || '#000000',
-            image: color.image || '',
-          }))
-        : [],
-      image: p.colors && p.colors.length > 0 ? p.colors[0].image : (p.image || ''),
-      slug: p.slug || '',
-    }));
+    const relatedProducts = relatedProductsFiltered.map(p => {
+      // Serialize each product to ensure it's JSON serializable
+      const serialized = JSON.parse(JSON.stringify(p));
+      return {
+        id: serialized.id,
+        name: serialized.name,
+        price: serialized.price,
+        maxPrice: serialized.originalPrice || serialized.maxPrice || serialized.price,
+        discount: serialized.originalPrice ? Math.round(((serialized.originalPrice - serialized.price) / serialized.originalPrice) * 100) : 0,
+        isNew: serialized.isNew || false,
+        colors: Array.isArray(serialized.colors)
+          ? serialized.colors.map(color => ({
+              name: color.name || 'Màu',
+              hex: color.hex || '#000000',
+              image: color.image || '',
+            }))
+          : [],
+        image: serialized.colors && serialized.colors.length > 0 ? serialized.colors[0].image : (serialized.image || ''),
+        slug: serialized.slug || '',
+      };
+    });
 
     const defaultImage = '/images/banner-1.webp';
     const productName = product?.name || 'Đồng phục Univi';
