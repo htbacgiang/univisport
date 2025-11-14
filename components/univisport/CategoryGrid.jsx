@@ -23,7 +23,7 @@ const categories = [
   },
   {
     name: "Chạy bộ",
-    slug: "/san-pham/chay-bo", // Slug tùy chỉnh
+    slug: "/san-pham/dong-phuc-chay-bo", // Slug tùy chỉnh
     image: "/product/dong-phuc-chay-bo.webp",
     width: 300,
     height: 300,

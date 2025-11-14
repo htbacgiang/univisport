@@ -19,7 +19,7 @@ import db from "../utils/db";
 import Product from "../models/Product";
 
 
-export default function Home({ posts, sportswearProducts, pickleballProducts, yogaPilatesProducts, meta }) {
+export default function Home({ posts = [], sportswearProducts = [], pickleballProducts = [], yogaPilatesProducts = [], aoGioProducts = [], meta }) {
   const jsonLdData = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -67,6 +67,14 @@ export default function Home({ posts, sportswearProducts, pickleballProducts, yo
           title="Đồng Phục Yoga - Pilates"
           products={yogaPilatesProducts}
           viewAllLink="/san-pham/dong-phuc-yoga-pilates"
+        />
+      )}
+      {/* Áo Gió Section */}
+      {aoGioProducts && aoGioProducts.length > 0 && (
+        <ProductSlider
+          title="Đồng Phục Áo Gió"
+          products={aoGioProducts}
+          viewAllLink="/san-pham/dong-phuc-ao-gio"
         />
       )}
       <VideoHero />
@@ -182,6 +190,26 @@ export async function getServerSideProps() {
       slug: product.slug || '',
     }));
 
+    // Lọc sản phẩm Áo Gió
+    const aoGioProductsData = productsData.filter(product => product.category === 'dong-phuc-ao-gio');
+    const aoGioProducts = aoGioProductsData.slice(0, 12).map(product => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      maxPrice: product.originalPrice || product.price,
+      discount: product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0,
+      isNew: product.isNew || false,
+      colors: Array.isArray(product.colors)
+        ? product.colors.map(color => ({
+            name: color.name || 'Màu',
+            hex: color.hex || '#000000',
+            image: color.image || '',
+          }))
+        : [],
+      image: product.colors && product.colors.length > 0 ? product.colors[0].image : (product.image || ''),
+      slug: product.slug || '',
+    }));
+
     const meta = {
       title: "Đồng Phục Univi: May Đồng Phục Thể Thao, Đồng Phục Doanh Nghiệp",
       description: "Đồng Phục Univi chuyên may đồng phục thể thao & doanh nghiệp với thiết kế đẳng cấp. Chất liệu cao cấp, form chuẩn, tôn vinh thương hiệu. Liên hệ ngay: 083 420 4999.",
@@ -212,6 +240,7 @@ export async function getServerSideProps() {
         sportswearProducts,
         pickleballProducts,
         yogaPilatesProducts,
+        aoGioProducts,
         meta,
       },
     };
@@ -223,6 +252,7 @@ export async function getServerSideProps() {
         sportswearProducts: [],
         pickleballProducts: [],
         yogaPilatesProducts: [],
+        aoGioProducts: [],
         meta: {
           title: "Đồng Phục Univi: May Đồng Phục Thể Thao, Đồng Phục Doanh Nghiệp",
           description: "Đồng Phục Univi chuyên may đồng phục thể thao & doanh nghiệp với thiết kế đẳng cấp. Chất liệu cao cấp, form chuẩn, tôn vinh thương hiệu. Liên hệ ngay: 083 420 4999.",

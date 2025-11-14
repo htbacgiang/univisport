@@ -94,7 +94,7 @@ const ProductCard = ({ id, name, description, price, maxPrice, discount, isNew, 
         {/* Product Name */}
         <Link href={`/san-pham/${slug}`} legacyBehavior>
           <a>
-            <h3 className="text-xs md:text-sm lg:text-base font-bold text-gray-900  line-clamp-2 mb-2 hover:text-[#105d97] transition-colors cursor-pointer">
+            <h3 className="text-xs md:text-sm lg:text-base font-bold text-gray-900  line-clamp-2 mb-1 hover:text-[#105d97] transition-colors cursor-pointer">
               {name}
             </h3>
           </a>
@@ -102,7 +102,7 @@ const ProductCard = ({ id, name, description, price, maxPrice, discount, isNew, 
 
         {/* Price */}
         <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="text-base md:text-lg lg:text-xl font-bold text-red-600">
+          <span className="text-base md:text-lg font-bold text-[#105d97]">
             {formatPrice(price)}
           </span>
           {maxPrice && maxPrice > price && (

@@ -97,6 +97,8 @@ const categories = [
   { categoryNameVN: 'Đồng phục áo Polo', category: 'dong-phuc-ao-polo' },
   { categoryNameVN: 'Đồng phục công sở', category: 'dong-phuc-cong-so' },
   { categoryNameVN: 'Đồng phục Team building', category: 'dong-phuc-team-building' },
+  { categoryNameVN: 'Đồng phục Golf Tennis', category: 'dong-phuc-golf-tennis' },
+  { categoryNameVN: 'Đồng phục Áo Gió', category: 'dong-phuc-ao-gio' },
 ];
 
 export default function CreateJSONProductPage() {

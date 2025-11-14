@@ -669,14 +669,14 @@ export async function getServerSideProps() {
 
     const meta = {
       title: "Đồng phục Áo gió - Đồng phục Univi",
-      description: "Đồng phục áo gió Univi: Cản gió – Chống nắng, giải pháp tối ưu cho hoạt động ngoài trời. Áo gió công nghệ UNIVI-DRY PRO siêu nhẹ, cản gió, chống tia UV và thoáng khí tối đa. Phù hợp cho Team Building, sự kiện ngoài trời và đồng phục công ty năng động.",
+      description: "Đồng phục Áo Gió Univi: Công nghệ 3 Chống giúp cản gió, trượt nước, chống tia UV và thoáng khí Uni Dry. Giải pháp đồng phục siêu nhẹ cho Team Building, sự kiện ngoài trời và doanh nghiệp nâng tầm thương hiệu.",
       keywords: "đồng phục áo gió, áo khoác mỏng, đồng phục áo gió team building, áo gió công nghệ, UNIVI-DRY PRO, đồng phục ngoài trời, Đồng phục Univi",
       author: "Đồng phục Univi",
       robots: "index, follow",
       canonical: "https://dongphucunivi.com/san-pham/dong-phuc-ao-gio",
       og: {
         title: "Đồng phục Áo gió - Đồng phục Univi",
-        description: "Đồng phục áo gió Univi: Cản gió – Chống nắng, giải pháp tối ưu cho hoạt động ngoài trời. Áo gió công nghệ UNIVI-DRY PRO siêu nhẹ, cản gió, chống tia UV và thoáng khí tối đa.",
+        description: "Đồng phục Áo Gió Univi với công nghệ 3 Chống: cản gió, trượt nước, chống tia UV và thoáng khí Uni Dry, bảo vệ đội nhóm trong mọi hoạt động.",
         type: "website",
         image: "https://dongphucunivi.com/images/banner-univi.webp",
         imageWidth: "1200",
@@ -688,7 +688,7 @@ export async function getServerSideProps() {
       twitter: {
         card: "summary_large_image",
         title: "Đồng phục Áo gió - Đồng phục Univi",
-        description: "Đồng phục áo gió Univi: Cản gió – Chống nắng, giải pháp tối ưu cho hoạt động ngoài trời. Áo gió công nghệ UNIVI-DRY PRO siêu nhẹ, cản gió, chống tia UV và thoáng khí tối đa.",
+        description: "Đồng phục Áo Gió Univi công nghệ 3 Chống: cản gió, trượt nước, chống tia UV và thoáng khí Uni Dry, đồng phục chuyên nghiệp cho doanh nghiệp năng động.",
         image: "https://dongphucunivi.com/images/banner-univi.webp",
         site: "@UniviSport",
       },
@@ -707,14 +707,14 @@ export async function getServerSideProps() {
         initialProducts: [],
           meta: {
             title: "Đồng phục Áo gió - Đồng phục Univi",
-            description: "Đồng phục áo gió Univi: Cản gió – Chống nắng, giải pháp tối ưu cho hoạt động ngoài trời.",
+            description: "Đồng phục Áo Gió Univi: Công nghệ 3 Chống cản gió, trượt nước, chống tia UV và thoáng khí Uni Dry cho hoạt động ngoài trời.",
             keywords: "đồng phục áo gió, Đồng phục Univi",
             author: "Đồng phục Univi",
             robots: "noindex, nofollow",
             canonical: "https://dongphucunivi.com/san-pham/dong-phuc-ao-gio",
             og: {
               title: "Đồng phục Áo gió - Đồng phục Univi",
-              description: "Đồng phục áo gió Univi: Cản gió – Chống nắng, giải pháp tối ưu cho hoạt động ngoài trời.",
+              description: "Đồng phục Áo Gió Univi với công nghệ 3 Chống giúp bảo vệ đội nhóm trong mọi điều kiện ngoài trời.",
               type: "website",
               image: "https://dongphucunivi.com/images/banner-univi.webp",
               imageWidth: "1200",
@@ -726,7 +726,7 @@ export async function getServerSideProps() {
             twitter: {
               card: "summary_large_image",
               title: "Đồng phục Áo gió - Đồng phục Univi",
-              description: "Đồng phục áo gió Univi: Cản gió – Chống nắng, giải pháp tối ưu cho hoạt động ngoài trời.",
+              description: "Đồng phục Áo Gió Univi công nghệ 3 Chống: cản gió, trượt nước, chống tia UV và thoáng khí Uni Dry.",
               image: "https://dongphucunivi.com/images/banner-univi.webp",
               site: "@UniviSport"
             }

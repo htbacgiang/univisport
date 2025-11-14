@@ -537,9 +537,9 @@ export default function Banner() {
           <p className="text-blue-300 text-base md:text-3xl small-heading">
             {slides[currentSlide].smallHeading}
           </p>
-          <h1 className="text-2xl md:text-6xl text-white main-heading mb-4">
+          <h2 className="text-2xl md:text-6xl text-white main-heading mb-4">
             {slides[currentSlide].heading}
-          </h1>
+          </h2>
           <p className="text-gray-100 text-base md:text-xl mb-8 description-text">
             {slides[currentSlide].description}
           </p>
