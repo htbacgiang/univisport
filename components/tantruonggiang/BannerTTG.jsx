@@ -605,7 +605,7 @@ export default function Banner() {
             className="modal-content w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-5xl rounded-lg overflow-hidden"
           >
             {/* Header: chỉ chứa nút Close */}
-            <div className="bg-gradient-to-r from-[#105d97] to-[#0ea5e9] px-6 py-4 flex justify-end items-center">
+            <div className="bg-slate-100 px-6 py-4 flex justify-end items-center">
               <button
                 onClick={toggleForm}
                 aria-label="Đóng form liên hệ"

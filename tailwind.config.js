@@ -36,6 +36,19 @@ module.exports = {
           light: "#e6e6e6",
         },
         action: "#3B82F6",
+        // Color palette for Q8 Design
+        'q8-primary': {
+          '50': '#F9F9F9',  // Light background
+          '100': '#F9F9F9',
+          '200': '#F9F9F9',
+          '300': '#F9F9F9',
+          '400': '#F9F9F9',
+          '500': '#B0B5B8',  // Light gray
+          '600': '#878E92',  // Medium gray
+          '700': '#5E676B',  // Dark gray
+          '800': '#5E676B',
+          '900': '#121212',  // Dark background/text
+        },
       },
       transitionProperty: {
         width: "width",

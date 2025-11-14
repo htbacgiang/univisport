@@ -39,7 +39,7 @@ const ProductSlider = ({ title, products, viewAllLink }) => {
           {viewAllLink && (
             <Link
               href={viewAllLink}
-              className="btn-gradient-univi text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+              className=" text-[#105d97] px-4 py-2 rounded-lg text-sm font-bold  hover:shadow-lg transition-all duration-300"
             >
               Xem tất cả
             </Link>

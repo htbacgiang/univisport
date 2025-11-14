@@ -7,7 +7,6 @@ import { ChevronDown, ChevronUp, Search,  X } from 'lucide-react';
 import BannerCarousel from '../../../components/univisport/BannerCarousel';
 import { getProductsByCategory } from '../../../lib/getProductsByCategory';
 import RunningUniviPage from '../../../components/univisport/bai-viet/RunningUniviPage';
-import InternalLinks from '../../../components/univisport/InternalLinks';
 
 // Hàm bỏ dấu tiếng Việt và chuẩn hóa slug
 const removeDiacritics = (str) => {
@@ -649,15 +648,6 @@ const DongPhucGym = ({ initialProducts }) => {
               <p className="text-center text-gray-500">Không tìm thấy sản phẩm nào trong danh mục {displayCategory}.</p>
             )}
             {renderPagination()}
-            
-            {/* Internal Links Section for SEO */}
-            <InternalLinks
-              currentCategory={`/san-pham/${categorySlug}`}
-              relatedCategories={[
-                { name: displayCategory, slug: `/san-pham/${categorySlug}` },
-              ]}
-              showMainPages={true}
-            />
             
             <RunningUniviPage />
           </main>

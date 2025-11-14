@@ -5,7 +5,9 @@ export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    email: "",
     message: "",
+    service: "dong-phuc-univi", // Default service for Đồng phục Univi
   });
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({});
@@ -16,14 +18,41 @@ export default function ContactForm() {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Vui lòng nhập họ và tên";
     if (!formData.phone.trim()) newErrors.phone = "Vui lòng nhập số điện thoại";
-    else if (!/^\d{10,11}$/.test(formData.phone))
-      newErrors.phone = "Số điện thoại phải có 10-11 chữ số";
+    else if (!/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone))
+      newErrors.phone = "Số điện thoại không hợp lệ (VD: 0987654321)";
+    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      newErrors.email = "Email không hợp lệ";
+    if (!formData.message.trim()) newErrors.message = "Vui lòng nhập yêu cầu tư vấn";
+    else if (formData.message.length > 500)
+      newErrors.message = "Tin nhắn không được vượt quá 500 ký tự";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   useEffect(() => {
-    // Animation removed to ensure full opacity
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("slide-up");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    const leftSection = leftSectionRef.current;
+    const rightSection = rightSectionRef.current;
+
+    if (rightSection) observer.observe(rightSection);
+    if (leftSection && window.innerWidth >= 768) observer.observe(leftSection);
+
+    return () => {
+      if (rightSection) observer.unobserve(rightSection);
+      if (leftSection) observer.unobserve(leftSection);
+    };
   }, []);
 
   const handleChange = (e) => {
@@ -52,9 +81,9 @@ export default function ContactForm() {
       const result = await response.json();
 
       if (response.ok) {
-        setStatus("Đăng ký tư vấn thành công!");
-        setFormData({ name: "", phone: "", email: "", message: "" });
-        setTimeout(() => setStatus(""), 3000);
+        setStatus("Đăng ký tư vấn thành công! Chúng tôi sẽ liên hệ lại sớm nhất.");
+        setFormData({ name: "", phone: "", email: "", message: "", service: "dong-phuc-univi" });
+        setTimeout(() => setStatus(""), 5000);
       } else {
         throw new Error(result.message || "Không thể gửi yêu cầu");
       }
@@ -65,178 +94,95 @@ export default function ContactForm() {
 
   return (
     <div className="relative">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4">
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden border border-gray-100 z-[99999]">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Left Section - Information */}
-            <div ref={leftSectionRef} className="p-4 sm:p-6 md:p-8 lg:p-12 text-white relative overflow-hidden bg-blue-600" style={{backgroundColor: '#105d97', opacity: 1}}>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full -ml-12 -mb-12"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center mb-2 sm:mb-3">
-                  <div className="bg-white bg-opacity-20 p-2 sm:p-3 rounded-full mr-3 sm:mr-4">
-                    <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-blue-100">
+      <div className="max-w-8xl mx-auto">
+        <div className="bg-white borde rounded-3xl px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 pt-4 sm:pt-6 md:pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
+            <div ref={leftSectionRef} className="hidden md:block mt-2">
+              <h2 className="text-lg font-bold text-[#105d97] uppercase tracking-wide mb-1">
                 Đăng ký tư vấn
               </h2>
-                </div>
-                
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 leading-tight">
-                  Nâng tầm phong cách với <span className="text-yellow-300">Đồng phục Univi</span>
+              <h3 className="text-lg font-bold text-q8-primary-900 mb-3">
+                Nâng tầm phong cách với Đồng phục Univi
               </h3>
-                
-                <p className="text-sm sm:text-base md:text-lg text-blue-100 mb-3 sm:mb-4 leading-relaxed">
-                  Đồng phục Univi mang đến trang phục thể thao chất lượng cao cho gym, yoga, chạy bộ và golf. Với công nghệ UNI DRY thoáng khí và chất liệu an toàn, chúng tôi đảm bảo sự thoải mái và hiệu suất tối ưu.
-                </p>
-                
-                <div className="space-y-2 sm:space-y-3 md:space-y-4 hidden md:block">
-                  <div className="flex items-center">
-                    <div className="bg-green-400 p-1 rounded-full mr-2 sm:mr-3">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-sm sm:text-base text-blue-100">Tư vấn miễn phí 24/7</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="bg-green-400 p-1 rounded-full mr-2 sm:mr-3">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-sm sm:text-base text-blue-100">Thiết kế theo yêu cầu</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="bg-green-400 p-1 rounded-full mr-2 sm:mr-3">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-sm sm:text-base text-blue-100">Chất lượng cao, giá cạnh tranh</span>
-                  </div>
-                </div>
-              </div>
+              <p className="text-base text-q8-primary-700 mb-2">
+                Đồng phục Univi mang đến trang phục thể thao chất lượng cao cho gym, yoga, chạy bộ và golf. Với công nghệ UNI DRY thoáng khí và chất liệu an toàn, chúng tôi đảm bảo sự thoải mái và hiệu suất tối ưu.
+              </p>
+              <p className="text-base">
+                Liên hệ ngay để nhận tư vấn miễn phí và báo giá chi tiết cho đơn hàng của bạn!
+              </p>
             </div>
 
-            {/* Right Section - Form */}
-            <div ref={rightSectionRef} className="p-4 sm:p-6 md:p-8 lg:p-12">
-              <div className="mb-4 sm:mb-6 md:mb-8">
-                <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Liên hệ ngay</h4>
-                <p className="text-sm sm:text-base text-gray-600">Điền thông tin để nhận tư vấn miễn phí từ chuyên gia</p>
-              </div>
-              
+            <div ref={rightSectionRef} className="opacity-0">
               <form
                 onSubmit={handleSubmit}
-                className="space-y-4 sm:space-y-5 md:space-y-6"
+                className="space-y-3 sm:space-y-4"
                 role="form"
                 aria-label="Form đăng ký tư vấn đồng phục Univi"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-                  <div className="group">
-                    <label htmlFor="name" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      Họ và tên
-                    </label>
-                    <div className="relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div>
                     <input
                       id="name"
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                        placeholder="Nhập họ và tên"
+                      placeholder="Họ và tên"
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? "name-error" : undefined}
-                        className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-2 rounded-lg sm:rounded-xl focus:outline-none focus:bg-white transition-all duration-300 text-sm sm:text-base ${
-                          errors.name 
-                            ? "border-red-400 focus:border-red-500" 
-                            : "border-gray-200 group-hover:border-gray-300"
-                        }`}
-                        style={{
-                          ...(formData.name && !errors.name && { borderColor: '#105d97' }),
-                          ...(!formData.name && document.activeElement === document.getElementById('name') && { borderColor: '#105d97' })
-                        }}
-                        onFocus={(e) => e.target.style.borderColor = '#105d97'}
-                        onBlur={(e) => !formData.name && (e.target.style.borderColor = '')}
-                      />
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 pointer-events-none">
-                        {formData.name && (
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        )}
-                      </div>
-                    </div>
+                      className={`w-full p-2.5 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-q8-primary-600 text-sm sm:text-base ${
+                        errors.name ? "border-red-500" : "border-q8-primary-300"
+                      }`}
+                    />
                     {errors.name && (
-                      <p id="name-error" className="text-red-500 text-xs sm:text-sm mt-1 sm:mt-2 flex items-center">
-                        <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
+                      <p id="name-error" className="text-red-500 text-sm mt-1">
                         {errors.name}
                       </p>
                     )}
                   </div>
-                  
-                  <div className="group">
-                    <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      Số điện thoại
-                    </label>
-                    <div className="relative">
+                  <div>
                     <input
                       id="phone"
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                        placeholder="Nhập số điện thoại"
+                      placeholder="Số điện thoại"
                       aria-invalid={!!errors.phone}
                       aria-describedby={errors.phone ? "phone-error" : undefined}
-                        className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-2 rounded-lg sm:rounded-xl focus:outline-none focus:bg-white transition-all duration-300 text-sm sm:text-base ${
-                          errors.phone 
-                            ? "border-red-400 focus:border-red-500" 
-                            : "border-gray-200 group-hover:border-gray-300"
-                        }`}
-                        style={{
-                          ...(formData.phone && !errors.phone && { borderColor: '#105d97' })
-                        }}
-                        onFocus={(e) => e.target.style.borderColor = '#105d97'}
-                        onBlur={(e) => !formData.phone && (e.target.style.borderColor = '')}
-                      />
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 pointer-events-none">
-                        {formData.phone && /^\d{10,11}$/.test(formData.phone) && (
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        )}
-                      </div>
-                    </div>
+                      className={`w-full p-2.5 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-q8-primary-600 text-sm sm:text-base ${
+                        errors.phone ? "border-red-500" : "border-q8-primary-300"
+                      }`}
+                    />
                     {errors.phone && (
-                      <p id="phone-error" className="text-red-500 text-xs sm:text-sm mt-1 sm:mt-2 flex items-center">
-                        <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
+                      <p id="phone-error" className="text-red-500 text-sm mt-1">
                         {errors.phone}
                       </p>
                     )}
                   </div>
                 </div>
-                
-                <div className="group">
-                  <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                    Yêu cầu tư vấn
-                  </label>
+                <div>
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Email của bạn (tùy chọn)"
+                                          aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
+                      className={`w-full p-2.5 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-q8-primary-600 text-sm sm:text-base ${
+                        errors.email ? "border-red-500" : "border-q8-primary-300"
+                      }`}
+                  />
+                  {errors.email && (
+                    <p id="email-error" className="text-red-500 text-sm mt-1">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <div className="relative">
                   <textarea
                     id="message"
                     name="message"
@@ -244,96 +190,46 @@ export default function ContactForm() {
                     onChange={handleChange}
                     placeholder="Mô tả yêu cầu của bạn (ví dụ: đồng phục học sinh, đồng phục công ty, số lượng 100 áo...)"
                     aria-describedby={errors.message ? "message-error" : undefined}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-2 rounded-lg sm:rounded-xl focus:outline-none focus:bg-white h-24 sm:h-28 md:h-32 resize-none transition-all duration-300 text-sm sm:text-base ${
-                      errors.message 
-                        ? "border-red-400 focus:border-red-500" 
-                        : "border-gray-200 group-hover:border-gray-300"
-                    }`}
-                    style={{
-                      ...(formData.message && !errors.message && { borderColor: '#105d97' })
-                    }}
-                    onFocus={(e) => e.target.style.borderColor = '#105d97'}
-                    onBlur={(e) => !formData.message && (e.target.style.borderColor = '')}
-                  />
+                      className={`w-full p-2.5 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-q8-primary-600 h-28 sm:h-32 resize-none text-sm sm:text-base ${
+                        errors.message ? "border-red-500" : "border-q8-primary-300"
+                      }`}
+                    />
+                    <div className="absolute bottom-2 right-2 text-xs text-q8-primary-400">
+                      {formData.message.length}/500
+                    </div>
+                  </div>
                   {errors.message && (
-                    <p id="message-error" className="text-red-500 text-xs sm:text-sm mt-1 sm:mt-2 flex items-center">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
+                    <p id="message-error" className="text-red-500 text-sm mt-1">
                       {errors.message}
                     </p>
                   )}
                 </div>
-                
                 <button
                   type="submit"
                   disabled={status === "Đang gửi..."}
-                  className="w-full text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl focus:outline-none transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl text-sm sm:text-base"
-                  style={{
-                    backgroundColor: '#105d97',
-                    boxShadow: '0 4px 14px 0 rgba(16, 93, 151, 0.3)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = '#0d4c7a';
-                    e.target.style.boxShadow = '0 6px 20px 0 rgba(16, 93, 151, 0.4)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = '#105d97';
-                    e.target.style.boxShadow = '0 4px 14px 0 rgba(16, 93, 151, 0.3)';
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.boxShadow = '0 0 0 4px rgba(16, 93, 151, 0.2)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.boxShadow = '0 4px 14px 0 rgba(16, 93, 151, 0.3)';
-                  }}
+                  className="w-full bg-[#105d97] text-white font-bold py-2.5 sm:py-3 rounded-full hover:bg-[#105d97]/80 transition-colors disabled:bg-q8-primary-300 flex items-center justify-center gap-2 text-sm sm:text-base"
                   aria-disabled={status === "Đang gửi..."}
                 >
                   {status === "Đang gửi..." ? (
                     <>
-                      <svg className="animate-spin -ml-1 mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                       Đang gửi...
                     </>
                   ) : (
                     <>
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
-                      <span className="hidden sm:inline">Đăng ký tư vấn ngay</span>
-                      <span className="sm:hidden">Đăng ký ngay</span>
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
+                      Đăng ký tư vấn <span>→</span>
                     </>
                   )}
                 </button>
               </form>
-              
               {status && (
-                <div className={`mt-4 sm:mt-6 p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4 ${
-                  status.includes("thành công") 
-                    ? "bg-blue-50 text-blue-700" 
-                    : "bg-red-50 border-red-400 text-red-700"
-                }`}
-                style={{
-                  ...(status.includes("thành công") && { borderLeftColor: '#105d97' })
-                }}>
-                  <div className="flex items-center">
-                    {status.includes("thành công") ? (
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" style={{color: '#105d97'}}>
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    ) : (
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                    )}
-                    <p className="font-medium text-sm sm:text-base">{status}</p>
-                  </div>
-                </div>
+                <p
+                  className={`mt-2 text-center ${
+                    status.includes("thành công") ? "text-q8-primary-600" : "text-red-600"
+                  }`}
+                >
+                  {status}
+                </p>
               )}
             </div>
           </div>
@@ -341,8 +237,26 @@ export default function ContactForm() {
       </div>
 
       <style jsx>{`
-        .group:hover .group-hover\:border-gray-300 {
-          border-color: #d1d5db;
+        .opacity-0 {
+          opacity: 100%;
+        }
+        .slide-up {
+          animation: slideUp 0.6s ease-out forwards;
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @media (max-width: 640px) {
+          .opacity-0 {
+            opacity: 1;
+          }
         }
       `}</style>
     </div>

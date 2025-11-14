@@ -208,7 +208,7 @@ const Navbar = () => {
       {/* Contact Popup */}
       {contactPopupOpen && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-[999999] flex items-center justify-center"
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 z-[999999] flex items-center justify-center"
           onClick={toggleContactPopup} // Đóng khi click bên ngoài
         >
           <div
