@@ -212,17 +212,19 @@ const Navbar = () => {
           onClick={toggleContactPopup} // Đóng khi click bên ngoài
         >
           <div
-            className="bg-white rounded-2xl shadow-lg max-w-5xl w-full mx-4 animate-slide-up"
+            className="bg-white rounded-2xl shadow-lg max-w-5xl w-full mx-4 animate-slide-up overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-end items-center p-4 border-b">
+            <div className="flex justify-end bg-white items-center p-4 border-b rounded-t-2xl relative z-10">
               <AiOutlineClose
-                className="cursor-pointer"
+                className="cursor-pointer text-[#105d97] hover:text-[#0d4c7a] transition-colors"
                 size={25}
                 onClick={toggleContactPopup}
               />
             </div>
-            <ContactForm />
+            <div className="bg-white">
+              <ContactForm />
+            </div>
           </div>
         </div>
 

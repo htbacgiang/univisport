@@ -605,11 +605,11 @@ export default function Banner() {
             className="modal-content w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-5xl rounded-lg overflow-hidden"
           >
             {/* Header: chỉ chứa nút Close */}
-            <div className="bg-slate-100 px-6 py-4 flex justify-end items-center">
+            <div className="bg-white px-6 py-4 flex justify-end items-center border-b rounded-t-lg relative z-10">
               <button
                 onClick={toggleForm}
                 aria-label="Đóng form liên hệ"
-                className="text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#105d97] rounded-full p-1 transition-all hover:rotate-90 duration-300"
+                className="text-[#105d97] hover:text-[#0d4c7a] focus:outline-none focus:ring-2 focus:ring-[#105d97] focus:ring-offset-2 rounded-full p-1 transition-all hover:rotate-90 duration-300"
               >
                 <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path

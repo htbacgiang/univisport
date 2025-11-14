@@ -202,7 +202,7 @@ const Navbar = () => {
               className="flex justify-end bg-white items-center p-4 border-b rounded-t-2xl relative z-10"
             >
               <AiOutlineClose
-                className="cursor-pointer text-gray-700 hover:text-gray-900"
+                className="cursor-pointer text-[#105d97] hover:text-[#0d4c7a] transition-colors"
                 size={25}
                 onClick={toggleContactPopup}
               />
