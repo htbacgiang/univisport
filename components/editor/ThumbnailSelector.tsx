@@ -37,6 +37,11 @@ const ThumbnailSelector: FC<Props> = ({
     const file = files[0];
     setSelectedThumbnail(URL.createObjectURL(file));
     onChange(file);
+    
+    // Cũng upload file lên server nếu có onFileSelect
+    if (onFileSelect) {
+      onFileSelect(file);
+    }
   };
 
   useEffect(() => {

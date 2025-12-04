@@ -10,6 +10,10 @@ import TipTapImage from "@tiptap/extension-image";
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import TextAlign from "@tiptap/extension-text-align";
+import Table from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableHeader from "@tiptap/extension-table-header";
+import TableCell from "@tiptap/extension-table-cell";
 
 import ToolBar from "./ToolBar";
 import EditLink from "./Link/EditLink";
@@ -74,28 +78,55 @@ const Editor: FC<Props> = ({
   });
 
   const fetchImages = async () => {
-    const { data } = await axios("/api/image");
-    setImages(data.images);
+    try {
+      const { data } = await axios("/api/image");
+      setImages(data.images || []);
+    } catch (error: any) {
+      setImages([]);
+    }
   };
 
   const handleImageUpload = async (imageData: File | { file: File; altText: string }) => {
     setUploading(true);
-    const formData = new FormData();
     
-    // Kiểm tra xem có phải là object chứa file và altText không
-    if (typeof imageData === 'object' && 'file' in imageData && 'altText' in imageData) {
-      formData.append("image", imageData.file);
-      formData.append("altText", imageData.altText);
-    } else {
-      // Fallback cho trường hợp chỉ có file
-      formData.append("image", imageData as File);
-      formData.append("altText", "");
+    try {
+      const formData = new FormData();
+      let fileToUpload: File;
+      let altText = "";
+      
+      // Kiểm tra xem có phải là object chứa file và altText không
+      if (typeof imageData === 'object' && 'file' in imageData && 'altText' in imageData) {
+        fileToUpload = imageData.file;
+        altText = imageData.altText || "";
+      } else {
+        // Fallback cho trường hợp chỉ có file
+        fileToUpload = imageData as File;
+        altText = "";
+      }
+      
+      formData.append("image", fileToUpload);
+      formData.append("altText", altText);
+      
+      const { data } = await axios.post("/api/image", formData);
+      
+      // Thêm ảnh mới vào danh sách
+      const newImage = {
+        src: data.src,
+        altText: data.altText || altText,
+        id: data.id || data._id
+      };
+      setImages([newImage, ...images]);
+      
+      // Refresh lại danh sách ảnh từ server để đảm bảo đồng bộ
+      await fetchImages();
+      
+      toast.success("Upload ảnh thành công!");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.error || error.message || "Không thể upload ảnh. Vui lòng thử lại!";
+      toast.error(errorMessage);
+    } finally {
+      setUploading(false);
     }
-    
-    const { data } = await axios.post("/api/image", formData);
-    setUploading(false);
-
-    setImages([data, ...images]);
   };
 
   const editor = useEditor({
@@ -128,10 +159,20 @@ const Editor: FC<Props> = ({
           class: "mx-auto",
         },
       }),
+      Table.configure({
+        resizable: true,
+        HTMLAttributes: {
+          class:
+            "tiptap-table w-full border-collapse border border-gray-300 dark:border-gray-600",
+        },
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
-    
+
     editorProps: {
-      handleClick(view, pos, event) {
+      handleClick: (view: any, pos: number) => {
         const { state } = view;
         const selectionRange = getMarkRange(
           state.doc.resolve(pos),

@@ -3,9 +3,9 @@ import cloudinary from "cloudinary";
 import { mongooseConnect } from "../../lib/mongoose";
 
 cloudinary.v2.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY || process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET || process.env.CLOUD_API_SECRET,
 });
 
 export default async function handle(req, res) {
@@ -22,7 +22,7 @@ export default async function handle(req, res) {
   const links = [];
   for (const file of files.file) {
     const result = await cloudinary.v2.uploader.upload(file.path, {
-      folder: "tantruonggiang",
+      folder: "univisport",
       public_id: `file_${Date.now()}`,
       resource_type: "auto",
     });

@@ -14,7 +14,8 @@ import {
   BsTypeUnderline,
   BsImageFill,
 } from "react-icons/bs";
-import { MdFormatAlignCenter,MdFormatAlignRight,MdFormatAlignLeft } from "react-icons/md";
+import { MdFormatAlignCenter, MdFormatAlignRight, MdFormatAlignLeft } from "react-icons/md";
+import { MdTableRows, MdTableView, MdDeleteOutline } from "react-icons/md";
 
 import Button from "./Button";
 import { getFocusedEditor } from "../EditorUtils";
@@ -23,6 +24,8 @@ import InsertLink from "../Link/InsertLink";
 import { linkOption } from "../Link/LinkForm";
 import EmbedYoutube from "./EmbedYoutube";
 import EmbedImage from "./EmbedImage";
+import InsertTable from "./InsertTable";
+import EmbedFacebookReels from "./EmbedFacebookReels";
 
 interface Props {
   editor: Editor | null;
@@ -100,10 +103,48 @@ const ToolBar: FC<Props> = ({
     editor.chain().focus().setYoutubeVideo({ src: url }).run();
   };
 
+  const handleEmbedFacebookReels = (url: string) => {
+    if (!editor) return;
+
+    let normalizedUrl = url.trim();
+
+    if (!normalizedUrl.includes("facebook.com")) {
+      alert("Vui lòng nhập URL Facebook Reels hợp lệ");
+      return;
+    }
+
+    const encodedUrl = encodeURIComponent(normalizedUrl);
+    const embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false&width=500&height=281`;
+
+    const iframeHtml = `<div class="facebook-reel-embed" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 20px 0; background: #000;">
+  <iframe 
+    src="${embedUrl}" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+    scrolling="no" 
+    allowtransparency="true" 
+    allow="encrypted-media; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+    allowFullScreen="true"
+    loading="lazy">
+  </iframe>
+</div>`;
+
+    editor.chain().focus().insertContent(iframeHtml).run();
+  };
+
   const handleEmbedImage = (url: string, altText?: string) => {
     if (!editor) return;
     
     editor.chain().focus().setImage({ src: url, alt: altText || "" }).run();
+  };
+
+  const handleInsertTable = (rows: number, cols: number, withHeaderRow: boolean) => {
+    if (!editor) return;
+    
+    editor
+      .chain()
+      .focus()
+      .insertTable({ rows, cols, withHeaderRow })
+      .run();
   };
 
   const Head = () => {
@@ -239,11 +280,41 @@ const ToolBar: FC<Props> = ({
         <div className="h-4 w-[1px] bg-gray-300 dark:bg-gray-600 mx-1" />
         
         <EmbedYoutube onSubmit={handleEmbedYoutube} onToggle={onDropdownToggle} />
+        <EmbedFacebookReels onSubmit={handleEmbedFacebookReels} onToggle={onDropdownToggle} />
 
         <EmbedImage onSubmit={handleEmbedImage} onToggle={onDropdownToggle} />
 
         <Button onClick={onOpenImageClick}>
           <BsImageFill />
+        </Button>
+      </div>
+
+      {/* Table Tools Group */}
+      <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="h-4 w-[1px] bg-gray-300 dark:bg-gray-600 mx-1" />
+
+        {/* Insert table với form chọn số hàng/cột */}
+        <InsertTable onSubmit={handleInsertTable} onToggle={onDropdownToggle} />
+
+        {/* Thao tác hàng */}
+        <Button
+          onClick={() => editor.chain().focus().addRowAfter().run()}
+        >
+          <MdTableRows title="Thêm hàng bên dưới" />
+        </Button>
+
+        {/* Thao tác cột */}
+        <Button
+          onClick={() => editor.chain().focus().addColumnAfter().run()}
+        >
+          <MdTableView title="Thêm cột bên phải" />
+        </Button>
+
+        {/* Xóa bảng */}
+        <Button
+          onClick={() => editor.chain().focus().deleteTable().run()}
+        >
+          <MdDeleteOutline title="Xóa bảng" />
         </Button>
       </div>
     </div>

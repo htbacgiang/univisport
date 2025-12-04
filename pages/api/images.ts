@@ -4,9 +4,9 @@ import { v2 as cloudinary } from "cloudinary";
 
 // Cấu hình Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY ,
+  api_secret: process.env.CLOUD_API_SECRET,
 });
 
 // Hàm tiện ích để parse form multipart/form-data
@@ -25,7 +25,7 @@ const getImages: NextApiHandler = async (req, res) => {
     const response = await cloudinary.api.resources({
       resource_type: "image",
       max_results: 200,
-      prefix: "tantruonggiang",
+      prefix: "univisport",
     });
     res.json({ images: response.resources });
   } catch (error: any) {
@@ -38,7 +38,7 @@ const readAllImages: NextApiHandler = async (req, res) => {
       const { resources } = await cloudinary.api.resources({
         resource_type: "image",
         type: "upload",
-        prefix: "tantruonggiang",
+        prefix: "univisport",
         max_results: 1000,
       });
   
@@ -60,7 +60,7 @@ const uploadNewImage: NextApiHandler = async (req, res) => {
     for (const imageFile of imageFiles) {
       const { secure_url: url } = await cloudinary.uploader.upload(
         imageFile.filepath,
-        { folder: "tantruonggiang" }
+        { folder: "univisport" }
       );
       uploadedUrls.push(url);
     }

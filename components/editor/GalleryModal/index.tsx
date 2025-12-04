@@ -64,10 +64,16 @@ const GalleryModal: FC<Props> = ({
     target,
   }) => {
     const { files } = target;
-    if (!files) return;
+    if (!files) {
+      return;
+    }
 
     const file = files[0];
-    if (!file.type.startsWith("image")) return;
+    
+    if (!file.type.startsWith("image")) {
+      alert("Vui lòng chọn file ảnh!");
+      return;
+    }
 
     // Cleanup previous preview URL
     if (uploadPreviewUrl) {
@@ -82,14 +88,28 @@ const GalleryModal: FC<Props> = ({
   };
 
   const handleUploadConfirm = () => {
-    if (!uploadFile) return;
+    if (!uploadFile) {
+      alert("Không có file để upload. Vui lòng chọn lại!");
+      return;
+    }
     
     const customEvent = {
       file: uploadFile,
       altText: uploadAltText.trim()
     };
-    onFileSelect(customEvent as any);
     
+    if (onFileSelect && typeof onFileSelect === 'function') {
+      try {
+        onFileSelect(customEvent as any);
+      } catch (error) {
+        alert("Có lỗi xảy ra khi upload: " + (error as Error).message);
+      }
+    } else {
+      alert("Lỗi: onFileSelect không hợp lệ!");
+      return;
+    }
+    
+    // Đóng modal sau khi upload
     setShowUploadModal(false);
     setUploadFile(null);
     setUploadAltText("");
@@ -110,7 +130,6 @@ const GalleryModal: FC<Props> = ({
   };
 
   const handleImageSelect = (image: ImageData) => {
-    console.log("Selected image:", image);
     setSelectedImage(image);
     setAltText(image.altText || "");
     setEditingAltText(false);
@@ -141,16 +160,10 @@ const GalleryModal: FC<Props> = ({
     setErrorMessage("");
     
     try {
-      console.log("Session status:", status);
-      console.log("Session data:", session);
-      console.log("Đang lưu alt text cho image:", selectedImage.id, "với nội dung:", altText.trim());
-      
       const response = await axios.put("/api/image/alt-text", {
         imageId: selectedImage.id,
         altText: altText.trim()
       });
-      
-      console.log("Kết quả lưu alt text:", response.data);
       
       // Cập nhật selectedImage với alt text mới
       if (selectedImage) {
@@ -162,7 +175,6 @@ const GalleryModal: FC<Props> = ({
       
       setEditingAltText(false);
     } catch (error: any) {
-      console.error("Lỗi lưu alt text:", error);
       const errorMsg = error.response?.data?.error || error.message || "Có lỗi xảy ra khi lưu alt text";
       setErrorMessage(errorMsg);
     } finally {
@@ -218,12 +230,28 @@ const GalleryModal: FC<Props> = ({
               <div>
                 <input
                   onChange={handleOnImageChange}
-                  hidden
+                  onClick={(e) => {
+                    // Reset value để có thể chọn cùng file nhiều lần
+                    (e.target as HTMLInputElement).value = '';
+                  }}
+                  style={{ display: 'none' }}
                   type="file"
-                  id="image-input"
+                  id="image-input-gallery"
                   accept="image/*"
                 />
-                <label htmlFor="image-input">
+                <label 
+                  htmlFor="image-input-gallery"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Trigger click vào input
+                    const input = document.getElementById('image-input-gallery') as HTMLInputElement;
+                    if (input) {
+                      input.click();
+                    }
+                  }}
+                  className="block cursor-pointer"
+                >
                   <div className="w-full border-2 border-dashed border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 flex items-center justify-center space-x-2 p-4 cursor-pointer rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
                     <AiOutlineCloudUpload className="w-5 h-5" />
                     <span className="font-medium">Chọn ảnh</span>
@@ -341,10 +369,22 @@ const GalleryModal: FC<Props> = ({
         </div>
       </div>
 
-      {/* Upload Modal */}
+      {/* Upload Modal - Render outside ModalContainer để tránh z-index conflict */}
       {showUploadModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 max-w-full">
+        <div 
+          data-upload-modal="true"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          style={{ zIndex: 99999 }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleUploadCancel();
+            }
+          }}
+        >
+          <div 
+            className="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 max-w-full shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Upload ảnh mới
@@ -369,6 +409,12 @@ const GalleryModal: FC<Props> = ({
                 </div>
               )}
               
+              {!uploadPreviewUrl && (
+                <div className="relative aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400">Không có preview</span>
+                </div>
+              )}
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Mô tả ảnh (Alt Text)
@@ -390,10 +436,17 @@ const GalleryModal: FC<Props> = ({
                   Hủy
                 </button>
                 <button
-                  onClick={handleUploadConfirm}
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleUploadConfirm();
+                  }}
+                  disabled={!uploadFile}
+                  className={`flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors ${
+                    !uploadFile ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Upload
+                  {uploading ? "Đang upload..." : "Upload"}
                 </button>
               </div>
             </div>
