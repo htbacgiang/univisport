@@ -66,39 +66,69 @@ const SinglePost: NextPage<Props> = ({ post }) => {
 
   return (
     <DefaultLayout>
-      <div className="bg-gray-50 min-h-screen">
+      <div className="min-h-screen">
         <div className="h-[80px]"></div>
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Content */}
             <div className="flex-1">
-              <div className="bg-white rounded-lg shadow-sm p-8">
+              <div className="bg-white  p-4 md:p-8">
                 {/* Breadcrumb */}
-                <nav className="mb-6">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Link href="/" className="hover:text-[#105d97]">Trang chủ</Link>
-                    <span>/</span>
-                    <Link href="/bai-viet" className="hover:text-[#105d97]">Bài viết</Link>
-                    <span>/</span>
-                    <span className="text-gray-800">{trimText(title, 30)}</span>
-                  </div>
-                </nav>
+                <div className="flex font-bold gap-2 text-base text-gray-600">
+                  <Link href="/bai-viet" className="hover:text-blue-800 whitespace-nowrap">
+                    Bài viết
+                  </Link>
+                  <span>›</span>
+                  <span className="flex font-bold gap-2 text-base text-gray-600">
+                    {trimText(title, 35)}
+                  </span>
+                </div>
 
                 {/* Article Header */}
-                <div className="mb-8">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                <div className="mb-4">
+                  <h1 className="md:text-2xl text-xl font-bold text-gray-900 mb-4">
                     {title}
                   </h1>
-                  
+
                   <div className="flex items-center justify-between">
                     <Share url={`${host}/${slug}`} />
                   </div>
                 </div>
 
                 {/* Article Content */}
-                <div className="prose prose-lg max-w-none">
-                  {parse(content)}
-                </div>
+                <div className="blog prose prose-lg dark:prose-invert max-w-2xl md:max-w-4xl lg:max-w-5xl [&_img]:mx-auto">
+                <style jsx>{`
+                  .blog img {
+                    display: block;
+                    margin: 1.5em auto;
+                  }
+                  .blog figure {
+                    margin: 1.5em 0;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  .blog figure img {
+                    display: block;
+                    margin: 0 auto;
+                  }
+                  .blog figcaption {
+                    margin-top: 0.5em;
+                    font-size: 0.875em;
+                    color: #6b7280;
+                    font-style: italic;
+                    text-align: center;
+                    width: 100%;
+                    max-width: 100%;
+                  }
+                  .dark .blog figcaption {
+                    color: #9ca3af;
+                  }
+                `}</style>
+                {parse(content)}
+              </div>
               </div>
             </div>
 
@@ -133,7 +163,7 @@ const SinglePost: NextPage<Props> = ({ post }) => {
                     </Link>
                   ))}
                 </div>
-          
+
               </div>
             </div>
           </div>
@@ -205,7 +235,7 @@ export const getServerSideProps: GetServerSideProps<
       meta,
       slug,
       tags,
-      category,
+      category: category ?? "Không xác định",
       thumbnail: thumbnail?.url || "",
       createdAt: createdAt.toString(),
       recentPosts,

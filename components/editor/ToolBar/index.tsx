@@ -281,7 +281,6 @@ const ToolBar: FC<Props> = ({
         
         <EmbedYoutube onSubmit={handleEmbedYoutube} onToggle={onDropdownToggle} />
         <EmbedFacebookReels onSubmit={handleEmbedFacebookReels} onToggle={onDropdownToggle} />
-
         <EmbedImage onSubmit={handleEmbedImage} onToggle={onDropdownToggle} />
 
         <Button onClick={onOpenImageClick}>

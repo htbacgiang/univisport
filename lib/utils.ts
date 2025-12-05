@@ -67,7 +67,7 @@ export const formatPosts = (
     id: post._id.toString(),
     title: post.title,
     slug: post.slug,
-    category: post.category,
+    category: post.category || null,
     createdAt: post.createdAt.toString(),
     thumbnail: post.thumbnail?.url || "",
     meta: post.meta,

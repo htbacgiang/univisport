@@ -85,7 +85,7 @@ export default function Home({ posts = [], sportswearProducts = [], pickleballPr
       <PartnersSection />
       <FAQComponent />
       <BlogHero />
-      <div className="container mx-auto px-2 py-8 md:py-12">
+      <div className="container mx-auto px-2 py-4 md:py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {posts.map((post) => (
             <div key={post.slug} className="transform transition-all duration-300 hover:scale-105 ">
@@ -98,9 +98,9 @@ export default function Home({ posts = [], sportswearProducts = [], pickleballPr
         <div className="flex justify-center mt-6">
           <Link 
             href="/bai-viet"
-            className="group inline-flex items-center px-8 py-4 bg-[#105d97] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 hover:bg-[#0d4a7a]"
+            className="group inline-flex items-center px-6 py-4 bg-[#105d97] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 hover:bg-[#0d4a7a]"
           >
-            <span className="mr-3">Xem tất cả bài viết</span>
+            <span className="mr-3">Tất cả bài viết</span>
             <svg 
               className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" 
               fill="none" 

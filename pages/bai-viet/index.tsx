@@ -103,7 +103,7 @@ const Blogs: NextPage<Props> = ({ posts, meta }) => {
 
   return (
     <DefaultLayout2>
-      <div className="relative h-[40vh] w-full">
+      <div className="relative h-[30vh] md:h-[40vh] w-full">
         <Image
           src="/images/banner-univi.png"
           alt="Tin tức - Đồng phục Univi"
@@ -126,7 +126,7 @@ const Blogs: NextPage<Props> = ({ posts, meta }) => {
             <h1 className="text-3xl md:text-4xl font-bold text-white mt-2">
               Bài viết - Đồng phục Univi
             </h1>
-            <p className="text-lg md:text-xl text-white mt-2">
+            <p className="text-base md:text-xl text-white mt-2">
               Khám phá các bài viết về đồng phục, xu hướng thiết kế và kinh
               nghiệm chọn đồng phục chất lượng.
             </p>
@@ -134,15 +134,13 @@ const Blogs: NextPage<Props> = ({ posts, meta }) => {
         </div>
       </div>
       <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-8">
           {posts.length > 0 ? (
             <div className="max-w-7xl mx-auto">
               {/* Header Section */}
-              <div className="text-center mb-12">
+              <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Bài viết mới nhất</h2>
-                <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                  Khám phá các bài viết về đồng phục, xu hướng thiết kế và kinh nghiệm chọn đồng phục chất lượng
-                </p>
+            
               </div>
 
               {/* Blog Grid */}
@@ -176,16 +174,16 @@ const Blogs: NextPage<Props> = ({ posts, meta }) => {
                         className="block group-hover:text-[#105d97] transition-colors duration-200"
                         aria-label={post.title}
                       >
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#105d97] transition-colors duration-200">
+                        <h2 className="text-lg md:text-base font-bold text-gray-900 mb-1 line-clamp-2 group-hover:text-[#105d97] transition-colors duration-200">
                           {post.title}
-                        </h3>
+                        </h2>
                       </Link>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      <p className="text-gray-600 text-sm mb-2 line-clamp-3">
                       {post.meta}                     
                        </p>
                       <Link
                         href={`/bai-viet/${post.slug}`}
-                        className="inline-flex items-center text-[#105d97] font-semibold text-sm hover:text-[#0e4a7a] transition-colors duration-200"
+                        className="inline-flex items-center text-[#105d97] font-semibold text-base hover:text-[#0e4a7a] transition-colors duration-200"
                       >
                         Đọc thêm
                         <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">

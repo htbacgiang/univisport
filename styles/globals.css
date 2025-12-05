@@ -1113,57 +1113,81 @@ html, body {
   border-radius: 2px;
 }
 
-.blog h2 strong {
+blog h2 strong {
   font-weight: 500 !important;
-  font-size: 1.1em !important;
-  margin-top: 10px !important;
+  font-size: 1.2em !important;
+  margin-top: 5px !important;
   margin-bottom: 5px !important;
+  line-height: 1.5rem !important;
+  margin-top: 10px !important;
+
+ }
+ .blog img{
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+
  }
  .blog h2  {
   font-weight: 500 !important;
   font-size: 1.1em !important;
-  margin-top: 10px !important;
+  margin-top: 0px !important;
   margin-bottom: 5px !important;
+  line-height: 1.5rem !important;
+  margin-top: 10px !important;
  }
  .blog h3 {
-  font-size: 1em !important;
-  margin-top: 5px !important;
+  font-size: 1.1em !important;
+  margin-top: 0 !important;
   margin-bottom: 5px !important;
+  margin-top: 6px !important;
  }
  .blog h3 strong {
-  font-size: 1em !important;
   font-weight: 500 !important;
-  margin-top: 5px !important;
+  margin-top: 0 !important;
   margin-bottom: 5px !important;
+  margin-top: 6px !important;
+ }
+ .blog h4 {
+  font-size: 1.1em !important;
+  margin-top: 0 !important;
+  margin-bottom: 5px !important;
+  margin-top: 6px !important;
+ }
+ .blog h4 strong {
+  font-weight: 500 !important;
+  margin-top: 0 !important;
+  margin-bottom: 5px !important;
+  margin-top: 6px !important;
  }
  .blog p {
-  font-size: 16px !important;
+  font-size: 18px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
  }
  .blog li {
-  font-size: 16px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
  }
  .blog ul {
-  font-size: 16px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
  }
- .blog img {
-  margin-top: 6px !important;
-  margin-bottom: 6px !important;
- }
- .blog a{
-  font-weight: 400 !important;
-  font-style: italic !important;
-  text-decoration: none !important;
-  color: blue !important;
- }
- .blog a:hover{
-  color: rgb(255, 68, 0) !important;
- }
+/* Editor paragraph spacing - tăng khoảng cách giữa các đoạn trong editor */
+.prose p {
+  line-height: 1.75 !important;
+}
+
+.prose p:first-child {
+  margin-top: 0 !important;
+}
+
+.prose p:last-child {
+  margin-bottom: 0 !important;
+}
+.prose figure {
+  margin-bottom: 0 !important;
+  text-align: center !important;
+}
  .product{
   border-color: green !important;
  }

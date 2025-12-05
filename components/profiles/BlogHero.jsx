@@ -10,7 +10,7 @@ export default function BlogHero() {
           >
             Bài viết UNIVI Sport
           </p>
-          <h3 className="text-xl md:text-2xl mt-2 font-bold text-gray-900">
+          <h3 className="text-base md:text-xl mt-1 font-bold text-gray-900">
             Trang Phục Thể Thao Chuyên Dụng Cho Mọi Phong Cách Sống
           </h3>
         </div>

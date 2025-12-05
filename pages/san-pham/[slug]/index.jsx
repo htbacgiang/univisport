@@ -22,15 +22,7 @@ function Breadcrumb({ product }) {
 
   return (
     <nav aria-label="Breadcrumb" className="mb-3 mt-[60px] md:mt-[80px]">
-      <ol className="flex flex-wrap items-center space-x-2 text-sm text-gray-500">
-        <li>
-          <Link href="/san-pham" className="hover:text-[#105d97] transition-colors" aria-label="Sản phẩm">
-            Sản phẩm
-          </Link>
-        </li>
-        <li>
-          <span className="text-gray-400">/</span>
-        </li>
+      <ol className="flex flex-wrap items-center space-x-1 text-sm text-gray-500">
         <li>
           <Link href={`/san-pham/${categorySlug}`} className="hover:text-[#105d97] transition-colors" aria-current={category ? 'page' : undefined}>
             {categoryNameVN}
@@ -209,7 +201,7 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
   return (
     <DefaultLayout>
       <div className="min-h-screen ">
-        <div className="container mx-auto py-6 px-4 md:px-6 lg:px-8">
+        <div className="container mx-auto py-6 px-3 md:px-6 lg:px-8">
           <Breadcrumb product={product} />
           <div className="bg-white overflow-hidden">
             <div className="flex flex-col lg:flex-row">
@@ -224,14 +216,14 @@ export default function ProductDetailPage({ product, relatedProducts = [], categ
                   thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                   onSlideChange={handleMainSlideChange}
                   onSwiper={(swiper) => (mainSwiperRef.current = swiper)}
-                  className="w-full aspect-square rounded-xl overflow-hidden shadow-sm border border-gray-200"
+                  className="w-full aspect-[3/4] lg:aspect-square rounded-xl overflow-hidden shadow-sm border border-gray-200"
                   role="region"
                   aria-label="Product image carousel"
                   id="main-swiper"
                 >
                   {images.map((src, index) => (
                     <SwiperSlide key={index}>
-                      <div className="relative w-full aspect-square bg-gray-50 overflow-hidden">
+                      <div className="relative w-full aspect-[3/4] lg:aspect-square bg-gray-50 overflow-hidden">
                         <Image
                           src={imageErrors[index] ? '/images/placeholder.jpg' : getImageUrl(src)}
                           alt={`${product.name} image ${index + 1}`}

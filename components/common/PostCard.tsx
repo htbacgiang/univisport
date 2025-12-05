@@ -65,10 +65,10 @@ const PostCard: FC<Props> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 flex flex-col space-y-4">
+        <div className="p-4 flex flex-col space-y-2">
           {/* Title */}
           <Link href={`/bai-viet/${slug}`} className="group/link">
-            <h2 className="text-xl font-bold text-[white] group-hover/link:text-blue-400 transition-colors duration-300 line-clamp-2 leading-tight">
+            <h2 className="text-base font-bold text-[white] group-hover/link:text-blue-400 transition-colors duration-300 line-clamp-2 leading-tight">
               {title.split(" ").map((word, index) =>
                 word.toUpperCase() === "YOUR" ? (
                   <span key={index} className="text-yellow-400 font-extrabold">
@@ -83,7 +83,7 @@ const PostCard: FC<Props> = ({
 
           {/* Description */}
           <p className="text-slate-200 text-sm leading-relaxed line-clamp-3">
-            {trimText(meta, 120)}
+            {trimText(meta, 110)}
           </p>
 
           {/* Metadata Row */}
