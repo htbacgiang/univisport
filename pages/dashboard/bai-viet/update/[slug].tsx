@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<
           tags: tags.join(", "),
           thumbnail: thumbnail?.url || "",
           slug,
-          category: category || null,
+          category: category || "",
           meta,
           isDraft: isDraft || false,
           focusKeyword: focusKeyword || "",
