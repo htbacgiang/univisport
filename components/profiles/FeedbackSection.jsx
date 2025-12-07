@@ -15,6 +15,10 @@ const FeedbackSection = () => {
     { title: "Hệ thống phòng tập INSTRUCTOR JUMPING FITNESS", image: "/khach-hang/jumpfestiva/he-thong-phong-tap-instructor-jumping-fitness.webp", link: "/feedback/he-thong-phong-tap-instructor-jumping-fitness" },
     { title: "LIFE UP ACADEMY", image: "/khach-hang/life-up-academy.webp", link: "/feedback/life-up-academy" },
     { title: "SUNWORD HẠ LONG", image: "/khach-hang/sunword-ha-long.webp", link: "/feedback/sunword-ha-long" },
+    { title: "Flexjump", image: "/khach-hang/Flexjump/1.jpg", link: "/feedback/flexjump" },
+    { title: "FUNFIT", image: "/khach-hang/FUNFIT/1.jpg", link: "/feedback/funfit" },
+    { title: "MYSTERISE", image: "/khach-hang/MYSTERISE/1.jpg", link: "/feedback/mysterise" },
+    { title: "MTK", image: "/khach-hang/mtk/1.jpg", link: "/feedback/mtk" },
   ];
 
   useEffect(() => {

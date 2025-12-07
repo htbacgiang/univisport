@@ -84,11 +84,12 @@
 @media (max-width: 768px) {
   .helpContainer {
     right: -60px;
+    bottom: 30px;
   }
   .phoneRing {
-    top: 30px;
+    top: 40px;
   }
   .zaloRing {
-    top: -25px;
+    top: -15px;
   }
 }

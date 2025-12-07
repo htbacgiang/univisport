@@ -1,29 +1,12 @@
 import ProjectCard from "../../components/tantruonggiang/ProjectCard";
 import { projects } from "../../components/tantruonggiang/data/projects";
 import Link from "next/link";
-import { useState, useMemo } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import DefaultLayout2 from "../../components/layout/DefaultLayout2";
+import styles from "./Feedback.module.css";
 
 export default function DuAn({ meta = {} }) {
-  const [filter, setFilter] = useState("all");
-
-  const FILTERS = [
-    { id: "all", label: "Xem tất cả" },
-    { id: "dong-phuc-the-thao", label: "Đồng phục thể thao" },
-    { id: "dong-phuc-doanh-nghiep", label: "Đồng phục doanh nghiệp" },
-  ];
-
-  const filterMap = {
-    all: () => true,
-    "dong-phuc-the-thao": (project) => project.category === "Đồng phục thể thao",
-    "dong-phuc-doanh-nghiep": (project) => project.category === "Đồng phục doanh nghiệp",
-  };
-
-  const filteredProjects = useMemo(() => {
-    return projects.filter(filterMap[filter] || filterMap.all);
-  }, [filter]);
 
   const defaultMeta = {
     title: "Phản Hồi Khách Hàng – Đồng Phục Univi",
@@ -109,32 +92,33 @@ export default function DuAn({ meta = {} }) {
 
   return (
     <DefaultLayout2>
-      <div className=" min-h-screen">
-        <div className="relative min-h-[300px] w-full">
+      <div className={styles.feedbackPage}>
+        <div className={styles.heroBanner}>
           <Image
-            src={safeMeta.og.image}
+            src={"/images/feedback.jpg"}
             alt="Dự Án Đồng Phục - Đồng Phục Univi"
             fill={true}
             style={{ objectFit: "cover" }}
-            className="opacity-70 brightness-75"
+            className={styles.heroImage}
             priority={true}
           />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
-            <div className="p-6 md:p-10">
+          <div className={styles.heroOverlay}>
+            <div className={styles.heroContent}>
               <nav aria-label="Breadcrumb">
-                <p className="text-sm uppercase text-white">
+                <p className={styles.breadcrumb}>
                   <Link href="/">
-                    <span className="hover:text-[#105d97] cursor-pointer">
+                    <span className={styles.breadcrumbLink}>
                       Trang chủ
                     </span>
-                  </Link>{" "}
-                  / Feedback
+                  </Link>
+                  <span className={styles.breadcrumbSeparator}>/</span>
+                  Feedback
                 </p>
               </nav>
-              <h1 className="text-3xl md:text-4xl font-bold text-white mt-2">
+              <h1 className={styles.heroTitle}>
                 Các dự án may đồng phục chuyên nghiệp Univi
               </h1>
-              <p className="text-lg md:text-xl text-white mt-2">
+              <p className={styles.heroDescription}>
                 Khám phá các dự án đồng phục thể thao, đồng phục doanh nghiệp từ
                 Univi. Thiết kế miễn phí, may đo tận nơi, giao hàng toàn quốc.
               </p>
@@ -142,34 +126,18 @@ export default function DuAn({ meta = {} }) {
           </div>
         </div>
 
-        <div className="container mx-auto p-6">
-          <div className="flex space-x-4 mb-6">
-            {FILTERS.map(({ id, label }) => (
-              <button
-                key={id}
-                onClick={() => setFilter(id)}
-                className={`pb-1 transition-colors duration-300 ${filter === id
-                    ? "text-[#105d97] border-b-2 border-[#105d97]"
-                    : "text-gray-400"
-                  }`}
-                aria-pressed={filter === id}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {filteredProjects.length > 0 ? (
-              filteredProjects.map((project) => (
+        <div className={styles.container}>
+          <div className={styles.projectGrid}>
+            {projects.length > 0 ? (
+              projects.map((project) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
                 />
               ))
             ) : (
-              <p role="alert" className="text-gray-400">
-                Không có dự án nào phù hợp.
+              <p role="alert" className={styles.emptyState}>
+                Không có dự án nào.
               </p>
             )}
           </div>
@@ -209,6 +177,50 @@ export async function getServerSideProps() {
           "Khám phá phản hồi từ khách hàng về đồng phục Univi. Thiết kế miễn phí, giao hàng toàn quốc.",
         image: "/baner-univi.webp",
         site: "@DongPhucUnivi",
+      },
+    };
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: meta.title,
+      description: meta.description,
+      url: meta.canonical,
+      image: meta.og.image,
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Trang chủ",
+            item: "https://dongphucunivi.com",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Phản hồi",
+            item: meta.canonical,
+          },
+        ],
+      },
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: (projects || []).map((project, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: project.title,
+          description: project.content || "",
+          image: project.image || "",
+        })),
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "Đồng Phục Univi",
+        logo: {
+          "@type": "ImageObject",
+          url: "/baner-univi.webp",
+        },
       },
     };
 

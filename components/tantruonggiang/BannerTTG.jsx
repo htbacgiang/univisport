@@ -34,7 +34,7 @@ export default function Banner() {
       collectionLink: "/san-pham",
     },
     {
-      image: "/images/giai-phap-2s.webp",
+      image: "/images/giai-phap-2s.jpg",
       smallHeading: "GIẢI PHÁP SMART SPORT UNIFORM",
       heading: "Cho Các Phòng Tập",
       description:
